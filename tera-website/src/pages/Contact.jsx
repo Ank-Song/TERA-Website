@@ -64,7 +64,7 @@ export default function Contact() {
     if (errors[name]) setErrors(err => ({ ...err, [name]: undefined }))
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     const errs = validate()
     if (Object.keys(errs).length) {
@@ -72,11 +72,61 @@ export default function Contact() {
       return
     }
     setLoading(true)
-    // Simulate network delay
-    setTimeout(() => {
+
+    // ─────────────────────────────────────────────────────────────────
+    // Web3Forms forwards submissions to your email inbox — free, no backend.
+    // Setup (one-time, ~2 minutes):
+    //   1. Go to https://web3forms.com and enter your email address
+    //   2. Copy the Access Key they send you
+    //   3. Create  tera-website/.env.local  and add:
+    //        VITE_WEB3FORMS_KEY=your-access-key-here
+    //   4. Restart the dev server — form will start sending real emails
+    // ─────────────────────────────────────────────────────────────────
+    const accessKey = import.meta.env.VITE_WEB3FORMS_KEY
+
+    if (!accessKey) {
+      console.warn(
+        '[Contact Form] VITE_WEB3FORMS_KEY is not set.\n' +
+        'Get a free key at https://web3forms.com and add it to .env.local'
+      )
       setLoading(false)
-      setSubmitted(true)
-    }, 1200)
+      setErrors({ submit: 'Form is not yet configured. Please email us directly at sales@terasemi.com.br' })
+      return
+    }
+
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          access_key: accessKey,
+          subject: `[Tera Website] ${form.subject || 'New Inquiry'} — ${form.company}`,
+          from_name: `${form.firstName} ${form.lastName}`,
+          'Full Name':     `${form.firstName} ${form.lastName}`,
+          'Company':       form.company,
+          'Job Title':     form.jobTitle || '—',
+          'Email':         form.email,
+          'Phone':         form.phone || '—',
+          'Country':       form.country || '—',
+          'Subject':       form.subject,
+          'Target Market': form.market || '—',
+          'Est. Volume':   form.volume || '—',
+          'Message':       form.message,
+        }),
+      })
+
+      const data = await res.json()
+
+      if (data.success) {
+        setSubmitted(true)
+      } else {
+        setErrors({ submit: data.message || 'Submission failed. Please try again or email us directly.' })
+      }
+    } catch {
+      setErrors({ submit: 'Network error. Please check your connection or email sales@terasemi.com.br' })
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -329,11 +379,17 @@ export default function Contact() {
                       onChange={handleChange}
                     />
                     <span>
-                      I consent to Tera Semiconductor processing my data to respond to this inquiry, in accordance with the <a href="#">Privacy Policy</a>. *
+                      I consent to Tera Semiconductor processing my data to respond to this inquiry, in accordance with the <a href="/legal">Privacy Policy</a>. *
                     </span>
                   </label>
                   {errors.consent && <span className="form-error">{errors.consent}</span>}
                 </div>
+
+                {errors.submit && (
+                  <div className="form-submit-error">
+                    ⚠ {errors.submit}
+                  </div>
+                )}
 
                 <button type="submit" className="btn-submit" disabled={loading}>
                   {loading ? (

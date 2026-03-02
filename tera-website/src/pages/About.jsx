@@ -40,6 +40,7 @@ const values = [
   },
 ]
 
+// TODO: Replace with your real company milestones before launch.
 const timeline = [
   { year: '2010', event: 'Tera Semiconductor founded in Manaus, Amazonas, Brazil.' },
   { year: '2013', event: 'First production line operational; 180nm CMOS process certified.' },
@@ -51,27 +52,29 @@ const timeline = [
   { year: '2026', event: 'Expansion phase II begins; targeting 3D NAND integration.' },
 ]
 
+// TODO: Replace ALL four entries below with your real leadership team before launch.
+// These are placeholder profiles — using fake names on a live B2B site damages credibility.
 const leadership = [
   {
-    name: 'Dr. Ana Carvalho',
+    name: 'Dr. Ana Carvalho',       // TODO: Replace with real name
     title: 'Chief Executive Officer',
     bio: 'Former VP at a leading European foundry, Dr. Carvalho holds a PhD in Materials Science from USP and brings 22 years of semiconductor industry experience.',
     initials: 'AC',
   },
   {
-    name: 'Ricardo Mendes',
+    name: 'Ricardo Mendes',         // TODO: Replace with real name
     title: 'Chief Technology Officer',
     bio: 'Pioneer in sub-40nm CMOS process development with 15 patents. Former research director at IMEC Belgium before joining Tera to lead its advanced process program.',
     initials: 'RM',
   },
   {
-    name: 'Fernanda Souza',
+    name: 'Fernanda Souza',         // TODO: Replace with real name
     title: 'Chief Operating Officer',
     bio: 'Operations executive with expertise in lean manufacturing and semiconductor yield improvement. Led capacity expansion programs for fabs across two continents.',
     initials: 'FS',
   },
   {
-    name: 'Carlos Lima',
+    name: 'Carlos Lima',            // TODO: Replace with real name
     title: 'VP, Sales & Business Development',
     bio: '20 years of global semiconductor sales experience, with deep relationships across major OEMs in automotive, mobile, and industrial segments.',
     initials: 'CL',
@@ -117,17 +120,18 @@ export default function About() {
               Today, Tera operates one of Latin America's most advanced semiconductor fabrication facilities, with capacity across logic, memory, and specialty process nodes ranging from 28nm to 180nm. Our customer base spans global OEMs in automotive, mobile, industrial, and medical markets.
             </p>
           </div>
+          {/* TODO: Verify all stats below against real company data before launch */}
           <div className="about-intro__stats">
             <div className="about-stat">
-              <span className="about-stat__value">2010</span>
+              <span className="about-stat__value">2010</span>{/* TODO: Verify founding year */}
               <span className="about-stat__label">Founded</span>
             </div>
             <div className="about-stat">
-              <span className="about-stat__value">850+</span>
+              <span className="about-stat__value">850+</span>{/* TODO: Verify headcount */}
               <span className="about-stat__label">Employees</span>
             </div>
             <div className="about-stat">
-              <span className="about-stat__value">30K</span>
+              <span className="about-stat__value">30K</span>{/* TODO: Verify capacity */}
               <span className="about-stat__label">Wafer Starts / Month</span>
             </div>
             <div className="about-stat">
@@ -249,7 +253,7 @@ export default function About() {
               </div>
             </div>
             <Link to="/contact" className="btn-primary" style={{ marginTop: 32, display: 'inline-flex' }}>
-              Visit Our Facility <ArrowRight />
+              Get in Touch <ArrowRight />
             </Link>
           </div>
           <div className="map-placeholder" aria-label="Map of Manaus, Brazil">

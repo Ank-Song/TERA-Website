@@ -71,9 +71,9 @@ export default function Footer() {
         <div className="container footer__bottom-inner">
           <p>© {new Date().getFullYear()} Tera Semiconductor Ltda. All rights reserved.</p>
           <div className="footer__legal">
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Use</a>
-            <a href="#">Cookie Settings</a>
+            <Link to="/legal#privacy">Privacy Policy</Link>
+            <Link to="/legal#terms">Terms of Use</Link>
+            <Link to="/legal#cookies">Cookie Settings</Link>
           </div>
         </div>
       </div>
