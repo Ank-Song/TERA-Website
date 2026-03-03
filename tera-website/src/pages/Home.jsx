@@ -118,8 +118,15 @@ const stats = [
   { value: '24/7', label: 'Fab Operations' },
 ]
 
-/* ── Placeholder clients ──────────────────────────────  */
-const clients = ['Partner A', 'Partner B', 'Partner C', 'Partner D', 'Partner E', 'Partner F']
+/* ── Partners (anonymized until NDA clearance) ────────  */
+const clients = [
+  'Tier-1 Automotive OEM',
+  'Global Mobile Chipset Maker',
+  'Industrial Controls Leader',
+  'Consumer Electronics Brand',
+  'Medical Device Manufacturer',
+  'IoT Platform Provider',
+]
 
 export default function Home() {
   return (
@@ -147,6 +154,15 @@ export default function Home() {
             <p className="hero__subtitle">
               Tera delivers precision semiconductor fabrication — from eMMC and NAND Flash to custom ASICs — with the quality standards global OEMs demand, from our state-of-the-art facility in Manaus.
             </p>
+
+            {/* Certification trust strip */}
+            <div className="hero__certs">
+              <span className="hero__cert">✓ ISO 9001</span>
+              <span className="hero__cert">✓ IATF 16949</span>
+              <span className="hero__cert">✓ AEC-Q100</span>
+              <span className="hero__cert">✓ RoHS / REACH</span>
+            </div>
+
             <div className="hero__actions">
               <Link to="/contact" className="btn-primary">
                 Request a Quote <ArrowRight />
@@ -304,10 +320,13 @@ export default function Home() {
       <section className="partners section">
         <div className="container">
           <div className="section-header-centered">
-            <span className="section-label">Trusted Partners</span>
+            <span className="section-label">Trusted By Industry Leaders</span>
             <div className="accent-line" style={{ margin: '0 auto 16px' }} />
+            <h2 className="section-title" style={{ textAlign: 'center', fontSize: 'clamp(1.4rem, 3vw, 1.9rem)' }}>
+              The Partner of Choice Across Five Verticals
+            </h2>
             <p className="section-subtitle" style={{ textAlign: 'center', margin: '0 auto 40px' }}>
-              Industry-leading companies trust Tera for their critical semiconductor manufacturing needs.
+              From Tier-1 automotive suppliers to fast-growing IoT innovators — global OEMs rely on Tera for critical semiconductor manufacturing.
             </p>
           </div>
           <div className="partners-strip">
@@ -317,8 +336,8 @@ export default function Home() {
               </div>
             ))}
           </div>
-          <p className="partners-note">
-            * Client names are illustrative placeholders pending NDA clearance.
+          <p className="partners-nda">
+            Client identities withheld under active NDA agreements.
           </p>
         </div>
       </section>

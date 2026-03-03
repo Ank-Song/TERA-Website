@@ -4,6 +4,7 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  // Base path for GitHub Pages: https://ank-song.github.io/TERA-Website/
-  base: '/TERA-Website/',
+  // Local dev/preview → base '/'
+  // GitHub Actions deploy  → base '/TERA-Website/'
+  base: process.env.GITHUB_ACTIONS ? '/TERA-Website/' : '/',
 })
