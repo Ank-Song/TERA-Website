@@ -7,11 +7,17 @@ const ArrowRight = () => (
   </svg>
 )
 
+const CheckIcon = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="20 6 9 17 4 12"/>
+  </svg>
+)
+
 const values = [
   {
     icon: '🎯',
     title: 'Precision',
-    desc: 'Every process step is optimized for repeatability, consistency, and performance down to the atomic level.',
+    desc: 'Every process step is optimized for repeatability and consistency — from ≤2 µm wire bond accuracy to full 3D ball scan inspection on every unit.',
   },
   {
     icon: '🤝',
@@ -21,64 +27,72 @@ const values = [
   {
     icon: '🔬',
     title: 'Innovation',
-    desc: 'Continuous R&D investment drives process improvements and new product capabilities that keep our customers ahead of competition.',
+    desc: 'inTera Tecnologia, our dedicated R&D entity, continuously develops new process capabilities under Brazil\'s PADIS semiconductor incentive programme.',
   },
   {
     icon: '🌱',
     title: 'Sustainability',
-    desc: 'Manufacturing in Manaus gives us access to Brazil\'s abundant renewable energy, enabling a greener semiconductor supply chain.',
+    desc: 'ISO 14001 and ISO 50001 certified. Manufacturing in Manaus gives us access to predominantly hydroelectric power — enabling a greener semiconductor supply chain.',
   },
   {
     icon: '🏆',
     title: 'Excellence',
-    desc: 'Our quality management system exceeds industry benchmarks, from wafer yield metrics to on-time delivery performance.',
+    desc: 'Four active ISO certifications covering quality, environment, occupational health and energy management — audited annually, not just claimed.',
   },
   {
     icon: '🌍',
-    title: 'Global Reach',
-    desc: 'While rooted in Brazil, we serve customers across the Americas, Europe, and Asia with full logistics support.',
+    title: 'Brazilian Pride',
+    desc: 'Rooted in Manaus since 2015, part of the Digitron Group, and committed to building Latin America\'s most trusted semiconductor assembly operation.',
   },
 ]
 
-// TODO: Replace with your real company milestones before launch.
+const certifications = [
+  {
+    code: 'ISO 9001:2015',
+    title: 'Quality Management',
+    valid: 'Valid to 30 Nov 2026',
+    color: 'teal',
+  },
+  {
+    code: 'ISO 14001:2015',
+    title: 'Environmental Management',
+    valid: 'Valid to 01 Dec 2026',
+    color: 'teal',
+  },
+  {
+    code: 'ISO 45001:2018',
+    title: 'Occupational Health & Safety',
+    valid: 'Valid to 30 Aug 2027',
+    color: 'teal',
+  },
+  {
+    code: 'ISO 50001:2018',
+    title: 'Energy Management',
+    valid: 'Valid to 02 Jun 2027',
+    color: 'teal',
+  },
+  {
+    code: 'PADIS',
+    title: 'Brazilian Semiconductor Incentive',
+    valid: 'Programa de Incentivos ao Setor de Semicondutores',
+    color: 'blue',
+  },
+  {
+    code: 'RBA Member',
+    title: 'Responsible Business Alliance',
+    valid: 'Ethical & sustainable supply chain',
+    color: 'blue',
+  },
+]
+
 const timeline = [
-  { year: '2010', event: 'Tera Semiconductor founded in Manaus, Amazonas, Brazil.' },
-  { year: '2013', event: 'First production line operational; 180nm CMOS process certified.' },
-  { year: '2016', event: 'ISO 9001 certification achieved. 110nm process node introduced.' },
-  { year: '2018', event: 'Expansion of fab capacity to 30,000 wafer starts per month.' },
-  { year: '2020', event: 'IATF 16949 certification for automotive-grade production.' },
-  { year: '2022', event: 'eMMC 5.1 and UFS 3.1 memory product lines launched.' },
-  { year: '2024', event: '28nm process node achieves production-ready status.' },
-  { year: '2026', event: 'Expansion phase II begins; targeting 3D NAND integration.' },
-]
-
-// TODO: Replace ALL four entries below with your real leadership team before launch.
-// These are placeholder profiles — using fake names on a live B2B site damages credibility.
-const leadership = [
-  {
-    name: 'Dr. Ana Carvalho',       // TODO: Replace with real name
-    title: 'Chief Executive Officer',
-    bio: 'Former VP at a leading European foundry, Dr. Carvalho holds a PhD in Materials Science from USP and brings 22 years of semiconductor industry experience.',
-    initials: 'AC',
-  },
-  {
-    name: 'Ricardo Mendes',         // TODO: Replace with real name
-    title: 'Chief Technology Officer',
-    bio: 'Pioneer in sub-40nm CMOS process development with 15 patents. Former research director at IMEC Belgium before joining Tera to lead its advanced process program.',
-    initials: 'RM',
-  },
-  {
-    name: 'Fernanda Souza',         // TODO: Replace with real name
-    title: 'Chief Operating Officer',
-    bio: 'Operations executive with expertise in lean manufacturing and semiconductor yield improvement. Led capacity expansion programs for fabs across two continents.',
-    initials: 'FS',
-  },
-  {
-    name: 'Carlos Lima',            // TODO: Replace with real name
-    title: 'VP, Sales & Business Development',
-    bio: '20 years of global semiconductor sales experience, with deep relationships across major OEMs in automotive, mobile, and industrial segments.',
-    initials: 'CL',
-  },
+  { year: 'Oct 2015', event: 'TERA Semiconductor founded within the Digitron Group in Manaus, Amazonas. "Trusted Engineering & Reliable Assembly" — built to serve Brazil and the Americas.' },
+  { year: '2016', event: 'Cleanroom becomes operational. ISO 9001:2015 Quality Management certification achieved. First package assembly lines qualified.' },
+  { year: '2019', event: 'ISO 14001:2015 Environmental Management certification achieved, formalising our commitment to responsible manufacturing.' },
+  { year: '2021', event: 'ISO 45001:2018 Occupational Health & Safety certification achieved. Workforce safety standards reach international benchmark.' },
+  { year: '2022', event: 'inTera Tecnologia R&D entity established — dedicated scientific research and development under the PADIS incentive programme.' },
+  { year: '2024', event: 'ISO 50001:2018 Energy Management certification achieved. Four active ISO certifications now cover quality, environment, safety and energy.' },
+  { year: '2025', event: 'Production reaches 5 million units per month. 20% of cleanroom area remains available for new customer programmes and equipment expansion.' },
 ]
 
 export default function About() {
@@ -94,11 +108,11 @@ export default function About() {
         <div className="container page-hero__inner">
           <span className="section-label">About Tera</span>
           <h1 className="page-hero__title">
-            Built in Brazil.<br />
-            Built for the World.
+            Trusted Engineering.<br />
+            Reliable Assembly.
           </h1>
           <p className="page-hero__subtitle">
-            Tera Semiconductor is a leading independent semiconductor foundry headquartered in Manaus, Brazil. We combine advanced process technology with a relentless commitment to quality to deliver the chips that power tomorrow's products.
+            TERA Semiconductor — part of the Digitron Group — is a fully automated semiconductor package assembly and test facility headquartered in Manaus, Brazil, inside the Zona Franca de Manaus special economic zone.
           </p>
         </div>
       </section>
@@ -109,42 +123,42 @@ export default function About() {
           <div className="about-intro__text">
             <span className="section-label">Our Mission</span>
             <div className="accent-line" />
-            <h2 className="section-title">Enabling the Next Generation of Innovation</h2>
+            <h2 className="section-title">Brazil's Premier Semiconductor Assembly House</h2>
             <p>
-              Tera was founded on a simple but powerful belief: that world-class semiconductor manufacturing doesn't have to be confined to Silicon Valley or East Asia. By establishing our foundry operations in Manaus — Brazil's technology hub — we've created a unique supply chain advantage for customers seeking to diversify their manufacturing footprint.
+              Founded in October 2015, TERA — which stands for <strong>Trusted Engineering &amp; Reliable Assembly</strong> — was built on a single conviction: that world-class semiconductor back-end manufacturing belongs in Latin America. Operating within the Digitron Group and the Zona Franca de Manaus, we combine a fully automated 18-step assembly process with four active ISO certifications to deliver finished, tested semiconductor packages at scale.
             </p>
             <p style={{ marginTop: 16 }}>
-              Our mission is to be the preferred strategic manufacturing partner for semiconductor companies worldwide, delivering first-class process technology, superior quality, and the agility that only a dedicated foundry can provide.
+              Our 3,700 m² facility houses both a Class 1K and a Class 10K cleanroom, capable of producing 5 million units per month. With 20% of our cleanroom area still available for new equipment, we are actively expanding capacity alongside our customers.
             </p>
             <p style={{ marginTop: 16 }}>
-              Today, Tera operates one of Latin America's most advanced semiconductor fabrication facilities, with capacity across logic, memory, and specialty process nodes ranging from 28nm to 180nm. Our customer base spans global OEMs in automotive, mobile, industrial, and medical markets.
+              Research and development is conducted through <strong>inTera Tecnologia</strong>, our dedicated R&amp;D entity, under Brazil's PADIS semiconductor incentive programme. As a member of the Responsible Business Alliance, we hold ourselves to the highest standards of ethical and sustainable manufacturing.
             </p>
           </div>
-          {/* TODO: Verify all stats below against real company data before launch */}
+
           <div className="about-intro__stats">
             <div className="about-stat">
-              <span className="about-stat__value">2010</span>{/* TODO: Verify founding year */}
+              <span className="about-stat__value">2015</span>
               <span className="about-stat__label">Founded</span>
             </div>
             <div className="about-stat">
-              <span className="about-stat__value">850+</span>{/* TODO: Verify headcount */}
+              <span className="about-stat__value">46</span>
               <span className="about-stat__label">Employees</span>
             </div>
             <div className="about-stat">
-              <span className="about-stat__value">30K</span>{/* TODO: Verify capacity */}
-              <span className="about-stat__label">Wafer Starts / Month</span>
+              <span className="about-stat__value">5M</span>
+              <span className="about-stat__label">Units / Month</span>
             </div>
             <div className="about-stat">
-              <span className="about-stat__value">40+</span>
-              <span className="about-stat__label">Countries Served</span>
+              <span className="about-stat__value">3,700 m²</span>
+              <span className="about-stat__label">Facility Area</span>
             </div>
             <div className="about-stat">
-              <span className="about-stat__value">5</span>
-              <span className="about-stat__label">Process Nodes</span>
+              <span className="about-stat__value">4</span>
+              <span className="about-stat__label">ISO Certifications</span>
             </div>
             <div className="about-stat">
-              <span className="about-stat__value">99.6%</span>
-              <span className="about-stat__label">On-Time Delivery</span>
+              <span className="about-stat__value">18</span>
+              <span className="about-stat__label">Process Steps</span>
             </div>
           </div>
         </div>
@@ -170,15 +184,43 @@ export default function About() {
         </div>
       </section>
 
+      {/* Certifications */}
+      <section className="about-section about-section--dark" id="certifications">
+        <div className="container">
+          <div style={{ marginBottom: 52 }}>
+            <span className="section-label">Certifications &amp; Programmes</span>
+            <div className="accent-line" />
+            <h2 className="section-title light">Verified Quality at Every Level</h2>
+            <p className="section-subtitle light">
+              Four active ISO certifications — quality, environment, health &amp; safety, and energy — plus membership in Brazil's PADIS semiconductor incentive programme and the Responsible Business Alliance.
+            </p>
+          </div>
+          <div className="cert-grid">
+            {certifications.map(({ code, title, valid }) => (
+              <div key={code} className="cert-card">
+                <div className="cert-card__check">
+                  <CheckIcon />
+                </div>
+                <div>
+                  <span className="cert-card__code">{code}</span>
+                  <span className="cert-card__title">{title}</span>
+                  <span className="cert-card__valid">{valid}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Timeline */}
-      <section className="about-section about-section--dark">
+      <section className="about-section">
         <div className="container">
           <div style={{ marginBottom: 52 }}>
             <span className="section-label">Company History</span>
             <div className="accent-line" />
-            <h2 className="section-title light">Our Journey</h2>
-            <p className="section-subtitle light">
-              From a vision in 2010 to one of Latin America's premier semiconductor foundries.
+            <h2 className="section-title">Our Journey</h2>
+            <p className="section-subtitle">
+              From a vision in 2015 to Manaus's most advanced semiconductor assembly operation.
             </p>
           </div>
           <div className="timeline">
@@ -196,30 +238,6 @@ export default function About() {
         </div>
       </section>
 
-      {/* Leadership */}
-      <section className="about-section">
-        <div className="container">
-          <div style={{ marginBottom: 52 }}>
-            <span className="section-label">Leadership</span>
-            <div className="accent-line" />
-            <h2 className="section-title">Experienced Industry Veterans</h2>
-            <p className="section-subtitle">
-              Our leadership team brings decades of combined semiconductor experience from the world's top foundries, chipmakers, and research institutions.
-            </p>
-          </div>
-          <div className="leadership-grid">
-            {leadership.map(({ name, title, bio, initials }) => (
-              <div key={name} className="leader-card">
-                <div className="leader-avatar">{initials}</div>
-                <h3>{name}</h3>
-                <span className="leader-title">{title}</span>
-                <p>{bio}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Location */}
       <section className="about-section about-section--gray" id="location">
         <div className="container location-grid">
@@ -228,28 +246,28 @@ export default function About() {
             <div className="accent-line" />
             <h2 className="section-title">Manaus, Amazonas — Brazil</h2>
             <p className="section-subtitle" style={{ marginBottom: 24 }}>
-              Tera's state-of-the-art fabrication facility is located in the Polo Industrial de Manaus (PIM) — Brazil's largest industrial park — strategically positioned in the heart of the Amazon region.
+              Located within the Zona Franca de Manaus (ZFM) — Brazil's special economic free trade zone established in 1967 — TERA benefits from significant tax incentives under PADIS and PPB programmes, while sitting just minutes from an international airport and harbor.
             </p>
             <div className="location-facts">
               <div className="location-fact">
-                <strong>Fab Area</strong>
-                <span>120,000 m² — cleanroom + support facilities</span>
+                <strong>Address</strong>
+                <span>Av. Torquato Tapajós #7503, Tarumã, Manaus/AM — CEP 69041-025</span>
               </div>
               <div className="location-fact">
-                <strong>Cleanroom Class</strong>
-                <span>ISO Class 5 (100) for critical lithography areas</span>
+                <strong>Airport</strong>
+                <span>10 min / 8.4 km from Eduardo Gomes International Airport (MAO)</span>
               </div>
               <div className="location-fact">
-                <strong>Power Source</strong>
-                <span>98% hydroelectric — among the greenest fabs globally</span>
+                <strong>Harbor</strong>
+                <span>25 km from Manaus Harbor — access to sea freight routes</span>
               </div>
               <div className="location-fact">
-                <strong>Access</strong>
-                <span>Direct airport access — Eduardo Gomes International (MAO)</span>
+                <strong>Domestic Shipping</strong>
+                <span>São Paulo ~3 days · Bahia ~5 days · Rio Grande do Sul ~5 days</span>
               </div>
               <div className="location-fact">
-                <strong>Tax Incentive Zone</strong>
-                <span>Zona Franca de Manaus — strategic fiscal advantages for customers</span>
+                <strong>Economic Zone</strong>
+                <span>Zona Franca de Manaus (ZFM) — tax incentives via PADIS &amp; PPB programmes</span>
               </div>
             </div>
             <Link to="/contact" className="btn-primary" style={{ marginTop: 32, display: 'inline-flex' }}>
@@ -265,7 +283,8 @@ export default function About() {
                 </svg>
               </div>
               <span className="map-label">Manaus, Brazil</span>
-              <span className="map-sublabel">Polo Industrial de Manaus</span>
+              <span className="map-sublabel">Av. Torquato Tapajós #7503</span>
+              <span className="map-sublabel" style={{ fontSize: '0.72rem', opacity: 0.6 }}>CEP 69041-025 · Zona Franca de Manaus</span>
             </div>
           </div>
         </div>
@@ -275,7 +294,7 @@ export default function About() {
       <section className="about-cta">
         <div className="container about-cta__inner">
           <h2>Partner with Tera</h2>
-          <p>Contact our business development team to discuss how Tera can support your semiconductor manufacturing needs.</p>
+          <p>Contact our team to discuss how TERA can support your semiconductor assembly and test requirements.</p>
           <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link to="/contact" className="btn-primary">Contact Us <ArrowRight /></Link>
             <Link to="/technology" className="btn-outline">Our Technology</Link>

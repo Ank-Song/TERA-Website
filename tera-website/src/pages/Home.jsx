@@ -80,42 +80,42 @@ const markets = [
 const differentiators = [
   {
     Icon: ChipIcon,
-    title: 'Advanced Process Nodes',
-    desc: 'Access to leading-edge process technology delivering optimal performance, power, and area for your product requirements.',
+    title: 'Fully Automated Assembly',
+    desc: 'An 18-step fully automated back-end process — from tape application through final test — ensures consistent quality at 5 million units per month.',
   },
   {
     Icon: ShieldIcon,
-    title: 'Quality Assurance',
-    desc: 'ISO 9001 and IATF 16949 certified processes with rigorous testing at every stage of fabrication.',
+    title: 'Four ISO Certifications',
+    desc: 'ISO 9001, 14001, 45001 and 50001 certified. Every process step is controlled, documented and audited — quality you can verify, not just trust.',
   },
   {
     Icon: LeafIcon,
     title: 'Sustainability Commitment',
-    desc: 'Environmentally responsible manufacturing leveraging Brazil\'s renewable energy infrastructure for a greener supply chain.',
+    desc: 'ISO 14001 and 50001 certified for environmental and energy management. Manaus operates on predominantly hydroelectric power — one of the greenest supply chains in the Americas.',
   },
   {
     Icon: GlobeIcon,
-    title: 'Strategic Location',
-    desc: 'Operating from Manaus\'s Polo Industrial provides logistical advantages and access to Latin American markets.',
+    title: 'Zona Franca Advantage',
+    desc: 'Operating inside Brazil\'s Zona Franca de Manaus (ZFM) special economic zone delivers tax incentives via PADIS and PPB programs — and São Paulo delivery in ~3 days.',
   },
   {
     Icon: SpeedIcon,
-    title: 'Fast Time-to-Market',
-    desc: 'Streamlined design-to-tape-out workflow and dedicated program management teams minimize your development cycle.',
+    title: 'Class 1K Cleanroom',
+    desc: '894 m² Class 1K and 1,142 m² Class 10K cleanroom — with 20% capacity still available for new customer programs and equipment.',
   },
   {
     Icon: FlaskIcon,
-    title: 'R&D Partnership',
-    desc: 'Collaborative engineering support from our experienced team to optimize your design for our process technology.',
+    title: 'Dedicated R&D Entity',
+    desc: 'inTera Tecnologia, our in-house R&D arm, drives continuous process development under Brazil\'s PADIS semiconductor incentive programme.',
   },
 ]
 
 /* ── Stats ──────────────────────────────────────────── */
 const stats = [
-  { value: '28nm+', label: 'Leading Process Node' },
-  { value: '99.6%', label: 'Yield Excellence' },
-  { value: '15+', label: 'Product Families' },
-  { value: '24/7', label: 'Fab Operations' },
+  { value: 'Est. 2015', label: 'Founded' },
+  { value: '46', label: 'Employees' },
+  { value: '5M', label: 'Units / Month' },
+  { value: '3,700 m²', label: 'Facility Area' },
 ]
 
 /* ── Partners (anonymized until NDA clearance) ────────  */

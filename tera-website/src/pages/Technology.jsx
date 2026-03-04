@@ -8,120 +8,138 @@ const ArrowRight = () => (
 )
 
 const CheckIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
     <polyline points="20 6 9 17 4 12"/>
   </svg>
 )
 
-const processes = [
-  {
-    node: '28nm',
-    type: 'High-Performance Logic',
-    status: 'Production',
-    apps: 'Mobile SoC, AI Inference, High-Speed Interfaces',
-    specs: ['FinFET-inspired planar CMOS', 'Low-power variants available', 'Multi-Vt support', '10+ metal layers'],
-  },
-  {
-    node: '40nm',
-    type: 'Embedded Memory',
-    status: 'Production',
-    apps: 'Automotive, Industrial MCU, Smart Card',
-    specs: ['eFlash & eSRAM integration', 'HV options up to 12V', 'AEC-Q100 Grade 1', 'Extended temp −40°C to 125°C'],
-  },
-  {
-    node: '55nm',
-    type: 'Mixed-Signal',
-    status: 'Production',
-    apps: 'Power Management, RF Front-End, Sensor Interface',
-    specs: ['Precision analog & RF', 'MIM/MOM capacitors', 'Thick-metal inductor', 'Low-noise transistors'],
-  },
-  {
-    node: '110nm',
-    type: 'Specialty CMOS',
-    status: 'Production',
-    apps: 'CIS, Display Driver, IoT Edge',
-    specs: ['Pixel sensor process', 'BSI-compatible', 'Deep-trench isolation', 'ESD-robust I/O library'],
-  },
-  {
-    node: '180nm',
-    type: 'High-Voltage CMOS',
-    status: 'Production',
-    apps: 'Power IC, Motor Driver, Energy Harvesting',
-    specs: ['BCD process (Bipolar-CMOS-DMOS)', '5V – 40V devices', 'Isolated DMOS options', 'Robust latch-up immunity'],
-  },
+/* 18-step assembly process */
+const processSteps = [
+  { abbr: 'TA',  name: 'Tape Application' },
+  { abbr: 'BG',  name: 'Back Grinding' },
+  { abbr: 'LG',  name: 'Laser Grooving' },
+  { abbr: 'DS',  name: 'Die Saw' },
+  { abbr: 'SPB', name: 'Substrate Pre-Bake' },
+  { abbr: 'DB',  name: 'Die Bond' },
+  { abbr: 'DBC', name: 'Die Bond Cure' },
+  { abbr: 'PLM', name: 'Plasma Clean' },
+  { abbr: 'WB',  name: 'Wire Bond' },
+  { abbr: 'MD',  name: 'Molding' },
+  { abbr: 'PMC', name: 'Post Mold Cure' },
+  { abbr: 'LM',  name: 'Laser Marking' },
+  { abbr: 'HPW', name: 'High Pressure Wash' },
+  { abbr: 'BM',  name: 'Ball Mount' },
+  { abbr: 'SGL', name: 'Singulation' },
+  { abbr: 'BS',  name: 'Ball Scan Inspection' },
+  { abbr: 'FT',  name: 'Final Test' },
+  { abbr: 'PK',  name: 'Packaging' },
 ]
 
-const memoryProducts = [
+/* Highlight steps that are key differentiators */
+const highlightSteps = new Set(['WB', 'DB', 'BS', 'FT'])
+
+/* Package portfolio */
+const packages = [
   {
-    name: 'eMMC 5.1',
-    desc: 'Embedded MultiMediaCard storage for smartphones, tablets, and embedded Linux platforms requiring high sequential throughput and low latency boot.',
-    specs: [
-      'Up to 256 GB density',
-      'Sequential Read: 300 MB/s',
-      'Sequential Write: 150 MB/s',
-      'HS400 interface mode',
-      'Built-in wear leveling & ECC',
-      '-25°C to 85°C operation',
-    ],
+    name: 'eMMC',
+    balls: '153-ball',
+    size: '11.5 × 13 mm',
+    die: '1× to 4× die',
+    desc: 'Embedded MultiMediaCard — the industry-standard solution for mobile, tablet, and embedded Linux platforms.',
+    nand: 'Toshiba BiCS2/3/4/5 · Micron B16A/17A/27B/B47R/B57T · Samsung K9A/V5/V6/V8 · SanDisk G1ZED3D',
     tag: 'Most Popular',
+    qual: false,
   },
   {
-    name: 'UFS 3.1',
-    desc: 'Universal Flash Storage for flagship mobile and automotive infotainment with the highest random IOPS and multi-stream write capability.',
-    specs: [
-      'Up to 512 GB density',
-      'Sequential Read: 1,200 MB/s',
-      'Sequential Write: 500 MB/s',
-      'Gear 4 dual lane',
-      'HS-G4 interface',
-      'Hardware Cryptography (AES-256)',
-    ],
-    tag: 'Flagship',
+    name: 'eMCP',
+    balls: '221-ball',
+    size: '11.5 × 13 mm',
+    die: '1× to 4× die',
+    desc: 'Embedded Multi-Chip Package combining NAND and DRAM in a single footprint — 8+6 Gb, 16+8 Gb, and 32+16 Gb configurations.',
+    nand: 'NAND: Samsung K9A/V5/V6 · Toshiba BiCS3/5 / DRAM: Micron B16A/17A/27B/47R',
+    tag: null,
+    qual: false,
   },
   {
-    name: 'Industrial NAND',
-    desc: 'SLC and 3D pSLC NAND optimized for extended endurance in harsh environments — industrial automation, medical devices, and automotive ADAS.',
-    specs: [
-      'Up to 128 GB SLC',
-      '100K P/E cycle endurance',
-      'Pwrite: < 1 μs (pSLC)',
-      'BBM with extended block pool',
-      'ONFI 4.2 interface',
-      'AEC-Q100 qualification path',
-    ],
-    tag: 'Industrial Grade',
+    name: 'BGA',
+    balls: '252 / 272-ball',
+    size: '14 × 18 mm',
+    die: '1× to 4× die',
+    desc: 'Ball Grid Array for high-density storage applications. Compatible with Samsung AFG, Toshiba BiCS3/4/5, and Micron NAND.',
+    nand: 'Samsung AFG · Toshiba BiCS3/4/5 · Micron B16A/27B/B47R',
+    tag: null,
+    qual: false,
   },
   {
-    name: 'Low-Power LPDDR5X',
-    desc: 'Mobile DRAM for ultra-thin form factor devices with best-in-class power efficiency and bandwidth for AI workloads at the edge.',
-    specs: [
-      'Up to 16 GB per package',
-      '8533 Mbps data rate',
-      'LPDDR5X JEDEC compliance',
-      '< 1 mA deep sleep',
-      'On-die ECC',
-      'x16 / x32 bus width',
-    ],
-    tag: 'New',
+    name: 'BGA (High-Density)',
+    balls: '132-ball',
+    size: '12 × 18 mm',
+    die: '4× to 8× die',
+    desc: 'High-die-count BGA for maximum storage density. Supports Micron Z42M and Z42N NAND flash.',
+    nand: 'Micron Z42M · Z42N',
+    tag: null,
+    qual: true,
+  },
+  {
+    name: 'LPDDR',
+    balls: '200-ball',
+    size: '10 × 14.5 mm',
+    die: '2× to 4× die',
+    desc: 'Low-Power DDR mobile DRAM for smartphones, tablets, and automotive infotainment systems.',
+    nand: null,
+    tag: null,
+    qual: true,
   },
 ]
 
-const packageTypes = [
-  { name: 'BGA / PoP', desc: 'Ball Grid Array with Package-on-Package stacking for high-density mobile and IoT applications.' },
-  { name: 'QFN / QFP', desc: 'Quad Flat No-lead and Flat Pack for cost-effective automotive and industrial designs.' },
-  { name: 'WLCSP', desc: 'Wafer-Level Chip Scale Package delivering the smallest footprint for wearables and medical implants.' },
-  { name: 'LGA / SOP', desc: 'Land Grid Array and Small Outline Package for memory modules and legacy-compatible upgrades.' },
-  { name: 'Flip-Chip', desc: 'High-I/O density interconnect for high-performance processor and FPGA applications.' },
-  { name: 'Custom CoWoS', desc: 'Chip-on-Wafer-on-Substrate multi-die integration for HPC and AI accelerator designs.' },
+/* Key equipment highlights */
+const equipment = [
+  {
+    step: 'Wire Bond',
+    maker: 'KNS — Connx IConn PLUS',
+    specs: [
+      '≤ 2.0 µm bond accuracy (3σ)',
+      '35 µm pitch · 0.8 mil gold wire',
+      'Package up to 90 × 300 mm',
+    ],
+  },
+  {
+    step: 'Die Bond',
+    maker: 'Fastford DB8308',
+    specs: [
+      '≤ 5 µm placement accuracy (3σ)',
+      '200 mm & 300 mm wafer support',
+      'Die thickness from 60 µm',
+    ],
+  },
+  {
+    step: 'Ball Scan Inspection',
+    maker: 'Koh Young KOCi 3D',
+    specs: [
+      'Full top / bottom / side inspection',
+      '2D + 3D camera system',
+      'CIS coplanarity measurement',
+    ],
+  },
+  {
+    step: 'Singulation',
+    maker: 'Disco DFD 6X63',
+    specs: [
+      '~30,000 units / hour throughput',
+      'Substrates up to 260 × 330 mm',
+      'Product changeover < 10 min',
+    ],
+  },
 ]
 
-const testServices = [
-  'Wafer Sort (CP) — full parametric & functional',
-  'Final Test (FT) — HTOL, LTOL, temp cycling',
-  'Burn-In & Reliability Qualification',
-  'Failure Analysis & Cross-Section SEM',
-  'ATE: Advantest T2000 & Teradyne Ultraflex',
-  'On-Site Failure Analysis Lab',
+/* Certifications */
+const certifications = [
+  { code: 'ISO 9001:2015', title: 'Quality Management', valid: 'Valid to 30 Nov 2026' },
+  { code: 'ISO 14001:2015', title: 'Environmental Management', valid: 'Valid to 01 Dec 2026' },
+  { code: 'ISO 45001:2018', title: 'Occupational Health & Safety', valid: 'Valid to 30 Aug 2027' },
+  { code: 'ISO 50001:2018', title: 'Energy Management', valid: 'Valid to 02 Jun 2027' },
+  { code: 'PADIS', title: 'Brazilian Semiconductor Incentive', valid: 'Programa de Incentivos ao Setor de Semicondutores' },
+  { code: 'RBA Member', title: 'Responsible Business Alliance', valid: 'Ethical & sustainable supply chain' },
 ]
 
 export default function Technology() {
@@ -137,11 +155,11 @@ export default function Technology() {
         <div className="container page-hero__inner">
           <span className="section-label">Technology</span>
           <h1 className="page-hero__title">
-            Precision Process Technology<br />
-            for Every Application
+            Fully Automated Assembly<br />
+            &amp; Test — Start to Finish
           </h1>
           <p className="page-hero__subtitle">
-            From 28nm logic to 180nm high-voltage CMOS, Tera's process portfolio spans the full spectrum of semiconductor applications — backed by rigorous quality systems and dedicated engineering support.
+            An 18-step back-end semiconductor process — from bare wafer to finished, tested package — executed inside a Class 1K and Class 10K cleanroom at 5 million units per month.
           </p>
           <Link to="/contact" className="btn-primary">
             Discuss Your Requirements <ArrowRight />
@@ -149,185 +167,157 @@ export default function Technology() {
         </div>
       </section>
 
-      {/* Process Capabilities */}
+      {/* ── Assembly Process Flow ───────────────────────── */}
       <section className="tech-section" id="process">
         <div className="container">
           <span className="section-label">Process Technology</span>
           <div className="accent-line" />
-          <h2 className="section-title">Advanced CMOS Process Nodes</h2>
+          <h2 className="section-title">18-Step Back-End Assembly Process</h2>
           <p className="section-subtitle" style={{ marginBottom: 48 }}>
-            Our process portfolio covers logic, memory, mixed-signal, and specialty applications. Each node is fully characterized, PDK-ready, and supported by a comprehensive design enablement package.
+            Every unit follows a controlled, fully automated sequence — from wafer preparation through final electrical test and shipping packaging. Steps marked with a teal border are key precision differentiators.
           </p>
 
-          <div className="process-table">
-            <div className="process-table__header">
-              <span>Node</span>
-              <span>Technology Type</span>
-              <span>Status</span>
-              <span>Target Applications</span>
-              <span>Key Features</span>
-            </div>
-            {processes.map(({ node, type, status, apps, specs }) => (
-              <div key={node} className="process-row">
-                <div className="process-row__node">{node}</div>
-                <div>
-                  <strong>{type}</strong>
-                </div>
-                <div>
-                  <span className="status-badge status-badge--production">{status}</span>
-                </div>
-                <div className="process-row__apps">{apps}</div>
-                <div className="process-row__specs">
-                  {specs.map(s => (
-                    <span key={s} className="spec-tag">{s}</span>
-                  ))}
-                </div>
+          <div className="process-flow">
+            {processSteps.map(({ abbr, name }, i) => (
+              <div
+                key={abbr}
+                className={`process-step${highlightSteps.has(abbr) ? ' process-step--key' : ''}`}
+              >
+                <span className="process-step__num">{String(i + 1).padStart(2, '0')}</span>
+                <span className="process-step__abbr">{abbr}</span>
+                <span className="process-step__name">{name}</span>
               </div>
             ))}
+          </div>
+
+          <div className="process-flow__legend">
+            <span className="process-flow__legend-dot" />
+            Teal border = precision-critical step
           </div>
         </div>
       </section>
 
-      {/* Memory Products */}
-      <section className="tech-section tech-section--gray" id="memory">
+      {/* ── Package Portfolio ───────────────────────────── */}
+      <section className="tech-section tech-section--gray" id="packages">
         <div className="container">
-          <span className="section-label">Memory Products</span>
+          <span className="section-label">Package Portfolio</span>
           <div className="accent-line" />
-          <h2 className="section-title">eMMC, UFS & NAND Flash</h2>
+          <h2 className="section-title">eMMC, eMCP, BGA &amp; LPDDR</h2>
           <p className="section-subtitle" style={{ marginBottom: 52 }}>
-            Tera's memory product portfolio delivers industry-standard interfaces with competitive density, endurance, and reliability specifications for mobile, automotive, and industrial markets.
+            TERA assembles and tests five package families, supporting a broad range of NAND flash and DRAM die sources. Configurations under active qualification are marked below.
           </p>
 
-          <div className="mem-grid">
-            {memoryProducts.map(({ name, desc, specs, tag }) => (
-              <div key={name} className="mem-card">
-                {tag && <span className="mem-card__tag">{tag}</span>}
-                <h3>{name}</h3>
+          <div className="pkg-portfolio">
+            {packages.map(({ name, balls, size, die, desc, nand, tag, qual }) => (
+              <div key={name} className={`pkg-pkg-card${qual ? ' pkg-pkg-card--qual' : ''}`}>
+                <div className="pkg-pkg-card__header">
+                  <h3>{name}</h3>
+                  <div className="pkg-pkg-card__badges">
+                    {tag && <span className="pkg-badge pkg-badge--popular">{tag}</span>}
+                    {qual && <span className="pkg-badge pkg-badge--qual">Qualification</span>}
+                  </div>
+                </div>
+                <div className="pkg-pkg-card__meta">
+                  <span>{balls}</span>
+                  <span>{size}</span>
+                  <span>{die}</span>
+                </div>
                 <p>{desc}</p>
-                <ul className="mem-specs">
-                  {specs.map(s => (
-                    <li key={s}>
-                      <span className="check"><CheckIcon /></span>
-                      {s}
-                    </li>
-                  ))}
-                </ul>
-                <Link to="/contact" className="mem-card__cta">
-                  Get Datasheet <ArrowRight />
-                </Link>
+                {nand && (
+                  <p className="pkg-pkg-card__sources">
+                    <strong>Die sources:</strong> {nand}
+                  </p>
+                )}
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Packaging & Testing */}
-      <section className="tech-section tech-section--dark" id="packaging">
+      {/* ── Cleanroom & Capacity ─────────────────────────── */}
+      <section className="tech-section tech-section--dark" id="cleanroom">
         <div className="container">
-          <span className="section-label">Packaging & Testing</span>
+          <span className="section-label">Cleanroom &amp; Capacity</span>
           <div className="accent-line" />
-          <h2 className="section-title light">Complete Back-End Services</h2>
+          <h2 className="section-title light">Class 1K + Class 10K Facility</h2>
           <p className="section-subtitle light" style={{ marginBottom: 52 }}>
-            We provide full OSAT (Outsourced Semiconductor Assembly and Test) services, enabling customers to receive finished, tested components from a single supply chain partner.
+            Two controlled cleanroom zones, particle-monitored continuously, with 20% capacity available for new customer equipment and programme ramp.
           </p>
 
-          <div className="pkg-grid">
-            <div className="pkg-packages">
-              <h3>Package Formats</h3>
-              <div className="pkg-cards">
-                {packageTypes.map(({ name, desc }) => (
-                  <div key={name} className="pkg-card">
-                    <span className="pkg-card__name">{name}</span>
-                    <p>{desc}</p>
+          <div className="cleanroom-grid">
+            {/* Stats cards */}
+            <div className="cleanroom-stats">
+              <div className="cr-stat">
+                <span className="cr-stat__val">894 m²</span>
+                <span className="cr-stat__label">Class 1K Cleanroom</span>
+                <span className="cr-stat__note">≤ 1,000 particles (≥0.5 µm) / ft³</span>
+              </div>
+              <div className="cr-stat">
+                <span className="cr-stat__val">1,142 m²</span>
+                <span className="cr-stat__label">Class 10K Cleanroom</span>
+                <span className="cr-stat__note">≤ 10,000 particles (≥0.5 µm) / ft³</span>
+              </div>
+              <div className="cr-stat cr-stat--accent">
+                <span className="cr-stat__val">5,000,000</span>
+                <span className="cr-stat__label">Units / Month Capacity</span>
+                <span className="cr-stat__note">Maximum production capacity</span>
+              </div>
+              <div className="cr-stat">
+                <span className="cr-stat__val">20%</span>
+                <span className="cr-stat__label">Available for Expansion</span>
+                <span className="cr-stat__note">Vacant cleanroom area ready for new equipment</span>
+              </div>
+            </div>
+
+            {/* Equipment highlights */}
+            <div className="cleanroom-equip">
+              <h3>Key Production Equipment</h3>
+              <div className="equip-cards">
+                {equipment.map(({ step, maker, specs }) => (
+                  <div key={step} className="equip-card">
+                    <div className="equip-card__header">
+                      <span className="equip-card__step">{step}</span>
+                      <span className="equip-card__maker">{maker}</span>
+                    </div>
+                    <ul className="equip-card__specs">
+                      {specs.map(s => (
+                        <li key={s}>
+                          <span className="check check--dark"><CheckIcon /></span>
+                          {s}
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 ))}
               </div>
             </div>
-
-            <div className="pkg-test">
-              <h3>Test & Reliability Services</h3>
-              <ul className="test-list">
-                {testServices.map(s => (
-                  <li key={s}>
-                    <span className="check check--dark"><CheckIcon /></span>
-                    {s}
-                  </li>
-                ))}
-              </ul>
-
-              <div className="cert-strip">
-                <div className="cert-item">
-                  <span className="cert-icon">✓</span>
-                  <span>ISO 9001:2015</span>
-                </div>
-                <div className="cert-item">
-                  <span className="cert-icon">✓</span>
-                  <span>IATF 16949</span>
-                </div>
-                <div className="cert-item">
-                  <span className="cert-icon">✓</span>
-                  <span>AEC-Q100</span>
-                </div>
-                <div className="cert-item">
-                  <span className="cert-icon">✓</span>
-                  <span>RoHS / REACH</span>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </section>
 
-      {/* Design Services */}
-      <section className="tech-section" id="design">
-        <div className="container tech-design">
-          <div>
-            <span className="section-label">Design Enablement</span>
-            <div className="accent-line" />
-            <h2 className="section-title">From Concept to First Silicon</h2>
-            <p className="section-subtitle">
-              Our design enablement team provides the PDK, IP library, reference flows, and hands-on support to help you successfully tape out on Tera process technology.
-            </p>
-            <ul className="design-list">
-              {[
-                'Complete PDK with EDA-certified design rules',
-                'Standard cell, I/O, and memory IP libraries',
-                'DFM analysis and signoff support',
-                'Mask data preparation (MDP) and OPC',
-                'Co-design with customer\'s fabless team',
-                'Simulation models (SPICE, Verilog-A)',
-              ].map(item => (
-                <li key={item}>
-                  <span className="check check--teal"><CheckIcon /></span>
-                  {item}
-                </li>
-              ))}
-            </ul>
-            <Link to="/contact" className="btn-primary" style={{ marginTop: 32 }}>
-              Start Your Design Engagement <ArrowRight />
-            </Link>
-          </div>
-          <div className="design-visual" aria-hidden="true">
-            <div className="design-card">
-              <div className="design-card__header">
-                <span>TERA PDK v4.2</span>
-                <span className="design-status">● Active</span>
-              </div>
-              {[
-                ['Process Node', '28nm CMOS'],
-                ['EDA Support', 'Cadence, Synopsys, Mentor'],
-                ['IP Library', '450+ cells'],
-                ['DRC Rules', '1,200+'],
-                ['LVS Netlists', 'Included'],
-                ['SPICE Models', 'TT/SS/FF/SF/FS'],
-                ['Tape-out Lead', '12–16 weeks'],
-              ].map(([k, v]) => (
-                <div key={k} className="design-row">
-                  <span className="design-key">{k}</span>
-                  <span className="design-val">{v}</span>
+      {/* ── Quality & Certifications ─────────────────────── */}
+      <section className="tech-section" id="quality">
+        <div className="container">
+          <span className="section-label">Quality &amp; Compliance</span>
+          <div className="accent-line" />
+          <h2 className="section-title">Four ISO Certifications. One Supply Chain.</h2>
+          <p className="section-subtitle" style={{ marginBottom: 52 }}>
+            Every process step is controlled and audited under an integrated management system covering quality, environment, occupational health &amp; safety, and energy — all active and current.
+          </p>
+
+          <div className="tech-cert-grid">
+            {certifications.map(({ code, title, valid }) => (
+              <div key={code} className="tech-cert-card">
+                <div className="tech-cert-card__check">
+                  <CheckIcon />
                 </div>
-              ))}
-            </div>
+                <div>
+                  <span className="tech-cert-card__code">{code}</span>
+                  <span className="tech-cert-card__title">{title}</span>
+                  <span className="tech-cert-card__valid">{valid}</span>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -335,11 +325,11 @@ export default function Technology() {
       {/* CTA */}
       <section className="tech-cta">
         <div className="container tech-cta__inner">
-          <h2>Ready to Evaluate Our Process Technology?</h2>
-          <p>Request a PDK evaluation kit or schedule a technical briefing with our process engineers.</p>
+          <h2>Ready to Qualify Your Product at TERA?</h2>
+          <p>Request a technical briefing, facility overview, or sample run to evaluate our assembly and test capabilities.</p>
           <div className="tech-cta__btns">
-            <Link to="/contact" className="btn-primary">Request PDK Access <ArrowRight /></Link>
-            <Link to="/contact" className="btn-outline">Schedule a Briefing</Link>
+            <Link to="/contact" className="btn-primary">Request a Briefing <ArrowRight /></Link>
+            <Link to="/contact" className="btn-outline">Download Quality Pack</Link>
           </div>
         </div>
       </section>
