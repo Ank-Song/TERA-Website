@@ -1,5 +1,57 @@
 import { Link } from 'react-router-dom'
+import { useEffect, useRef } from 'react'
 import './Home.css'
+
+/* ── Scroll-reveal hook ─────────────────────────────── */
+function useScrollReveal() {
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      entries => entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('revealed')
+          observer.unobserve(e.target)
+        }
+      }),
+      { threshold: 0.1 }
+    )
+    document.querySelectorAll('[data-reveal]').forEach(el => observer.observe(el))
+    return () => observer.disconnect()
+  }, [])
+}
+
+/* ── Animated counter hook ──────────────────────────── */
+function useCounterAnimation() {
+  const hasRun = useRef(false)
+  useEffect(() => {
+    const statsEl = document.querySelector('.hero__stats')
+    if (!statsEl) return
+    const observer = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && !hasRun.current) {
+        hasRun.current = true
+        document.querySelectorAll('[data-count]').forEach(el => {
+          const target = parseFloat(el.dataset.count)
+          const suffix = el.dataset.suffix || ''
+          const prefix = el.dataset.prefix || ''
+          const duration = 1500
+          const start = performance.now()
+          const isInt = Number.isInteger(target)
+          const step = ts => {
+            const progress = Math.min((ts - start) / duration, 1)
+            const eased = 1 - Math.pow(1 - progress, 3)
+            const current = target * eased
+            el.textContent = prefix + (isInt ? Math.floor(current) : current.toFixed(1)) + suffix
+            if (progress < 1) requestAnimationFrame(step)
+            else el.textContent = prefix + (isInt ? target : target.toFixed(1)) + suffix
+          }
+          requestAnimationFrame(step)
+        })
+        observer.disconnect()
+      }
+    }, { threshold: 0.5 })
+    observer.observe(statsEl)
+    return () => observer.disconnect()
+  }, [])
+}
 
 /* ── Icon components (inline SVG) ──────────────────── */
 const ChipIcon = () => (
@@ -129,6 +181,8 @@ const clients = [
 ]
 
 export default function Home() {
+  useScrollReveal()
+  useCounterAnimation()
   return (
     <div className="home">
 
@@ -138,13 +192,16 @@ export default function Home() {
           <div className="hero__grid" />
           <div className="hero__glow hero__glow--1" />
           <div className="hero__glow hero__glow--2" />
+          {[...Array(8)].map((_, i) => (
+            <div key={i} className={`hero__particle hero__particle--${i}`} />
+          ))}
         </div>
 
         <div className="hero__inner container">
           <div className="hero__content">
             <div className="hero__eyebrow">
               <span className="hero__dot" />
-              Semiconductor Foundry Services
+              Semiconductor Assembly & Test
             </div>
             <h1 className="hero__title">
               Advanced Semiconductor<br />
@@ -152,15 +209,15 @@ export default function Home() {
               <span className="hero__accent">Heart of Brazil</span>
             </h1>
             <p className="hero__subtitle">
-              Tera delivers precision semiconductor fabrication — from eMMC and NAND Flash to custom ASICs — with the quality standards global OEMs demand, from our state-of-the-art facility in Manaus.
+              TERA delivers fully automated semiconductor package assembly and test — eMMC, eMCP, BGA, and LPDDR — with four ISO certifications and a 5M unit/month capacity, from Manaus, Brazil.
             </p>
 
             {/* Certification trust strip */}
             <div className="hero__certs">
               <span className="hero__cert">✓ ISO 9001</span>
-              <span className="hero__cert">✓ IATF 16949</span>
-              <span className="hero__cert">✓ AEC-Q100</span>
-              <span className="hero__cert">✓ RoHS / REACH</span>
+              <span className="hero__cert">✓ ISO 14001</span>
+              <span className="hero__cert">✓ ISO 45001</span>
+              <span className="hero__cert">✓ ISO 50001</span>
             </div>
 
             <div className="hero__actions">
@@ -192,18 +249,28 @@ export default function Home() {
 
         <div className="hero__stats">
           <div className="container hero__stats-inner">
-            {stats.map(({ value, label }) => (
-              <div key={label} className="hero__stat">
-                <span className="hero__stat-value">{value}</span>
-                <span className="hero__stat-label">{label}</span>
-              </div>
-            ))}
+            <div className="hero__stat">
+              <span className="hero__stat-value">Est. 2015</span>
+              <span className="hero__stat-label">Founded</span>
+            </div>
+            <div className="hero__stat">
+              <span className="hero__stat-value" data-count="46" data-suffix="">46</span>
+              <span className="hero__stat-label">Employees</span>
+            </div>
+            <div className="hero__stat">
+              <span className="hero__stat-value" data-count="5" data-suffix="M">5M</span>
+              <span className="hero__stat-label">Units / Month</span>
+            </div>
+            <div className="hero__stat">
+              <span className="hero__stat-value">3,700 m²</span>
+              <span className="hero__stat-label">Facility Area</span>
+            </div>
           </div>
         </div>
       </section>
 
       {/* ── CAPABILITIES OVERVIEW ──────────────────────── */}
-      <section className="capabilities section">
+      <section className="capabilities section" data-reveal>
         <div className="container">
           <div className="capabilities__header">
             <div>
@@ -212,39 +279,39 @@ export default function Home() {
               <h2 className="section-title">Built for High-Volume,<br />High-Reliability Production</h2>
             </div>
             <p className="section-subtitle">
-              From design consultation through wafer fabrication, packaging, and final test, Tera provides a complete foundry ecosystem under one roof.
+              From bare wafer through package assembly, test, and final inspection — TERA handles the complete back-end process under one roof, at scale.
             </p>
           </div>
 
           <div className="capabilities__grid">
-            <div className="cap-card cap-card--featured">
+            <div className="cap-card cap-card--featured" style={{'--card-index': 0}}>
               <div className="cap-card__icon"><ChipIcon /></div>
-              <h3>Memory Fabrication</h3>
-              <p>eMMC 5.1, UFS 3.1, and NAND Flash production optimized for mobile and industrial applications with competitive density and speed specifications.</p>
-              <Link to="/technology#memory" className="cap-card__link">
-                Learn more <ArrowRight />
-              </Link>
-            </div>
-            <div className="cap-card">
-              <div className="cap-card__icon"><FlaskIcon /></div>
-              <h3>Process Technology</h3>
-              <p>Advanced CMOS process nodes from 28nm to 180nm supporting a broad range of performance and cost targets for consumer, automotive, and industrial markets.</p>
+              <h3>Package Assembly</h3>
+              <p>18-step fully automated back-end process — tape application, back grind, die saw, die bond, wire bond, molding, laser marking, and packaging — at 5M units/month.</p>
               <Link to="/technology" className="cap-card__link">
                 Learn more <ArrowRight />
               </Link>
             </div>
-            <div className="cap-card">
-              <div className="cap-card__icon"><ShieldIcon /></div>
-              <h3>Packaging & Test</h3>
-              <p>Full back-end services including wafer sort, assembly in BGA/QFN/WLCSP packages, and final electrical and reliability testing to customer specs.</p>
-              <Link to="/technology#packaging" className="cap-card__link">
+            <div className="cap-card" style={{'--card-index': 1}}>
+              <div className="cap-card__icon"><FlaskIcon /></div>
+              <h3>Package Portfolio</h3>
+              <p>eMMC (153-ball), eMCP (221-ball), BGA (252/272/132-ball), and LPDDR (200-ball) packages in 1× to 8× die configurations. NAND sources: Toshiba, Micron, Samsung.</p>
+              <Link to="/technology" className="cap-card__link">
                 Learn more <ArrowRight />
               </Link>
             </div>
-            <div className="cap-card">
+            <div className="cap-card" style={{'--card-index': 2}}>
+              <div className="cap-card__icon"><ShieldIcon /></div>
+              <h3>Cleanroom & Capacity</h3>
+              <p>894 m² Class 1K and 1,142 m² Class 10K cleanroom. Maximum 5,000,000 units per month, with 20% of cleanroom area still available for new customer programs.</p>
+              <Link to="/technology" className="cap-card__link">
+                Learn more <ArrowRight />
+              </Link>
+            </div>
+            <div className="cap-card" style={{'--card-index': 3}}>
               <div className="cap-card__icon"><SpeedIcon /></div>
-              <h3>Design Services</h3>
-              <p>IP integration, DFM analysis, and mask data preparation to accelerate your path from verified RTL to first silicon.</p>
+              <h3>Quality & Compliance</h3>
+              <p>ISO 9001, 14001, 45001, and 50001 certified. PADIS and PPB Brazilian incentive programmes. Responsible Business Alliance (RBA) member.</p>
               <Link to="/technology" className="cap-card__link">
                 Learn more <ArrowRight />
               </Link>
@@ -254,7 +321,7 @@ export default function Home() {
       </section>
 
       {/* ── MARKETS ────────────────────────────────────── */}
-      <section className="markets-section section section--gray">
+      <section className="markets-section section section--gray" data-reveal>
         <div className="container">
           <div className="section-header-centered">
             <span className="section-label">Markets We Serve</span>
@@ -268,8 +335,8 @@ export default function Home() {
           </div>
 
           <div className="markets-grid">
-            {markets.map(({ icon, title, desc }) => (
-              <div key={title} className="market-card">
+            {markets.map(({ icon, title, desc }, i) => (
+              <div key={title} className="market-card" style={{'--card-index': i}}>
                 <span className="market-card__icon">{icon}</span>
                 <h3>{title}</h3>
                 <p>{desc}</p>
@@ -286,7 +353,7 @@ export default function Home() {
       </section>
 
       {/* ── WHY TERA ────────────────────────────────────── */}
-      <section className="why-tera section section--dark">
+      <section className="why-tera section section--dark" data-reveal>
         <div className="why-tera__bg" aria-hidden="true">
           <div className="why-tera__glow" />
         </div>
@@ -303,8 +370,8 @@ export default function Home() {
           </div>
 
           <div className="diff-grid">
-            {differentiators.map(({ Icon, title, desc }) => (
-              <div key={title} className="diff-card">
+            {differentiators.map(({ Icon, title, desc }, i) => (
+              <div key={title} className="diff-card" style={{'--card-index': i}}>
                 <div className="diff-card__icon">
                   <Icon />
                 </div>
@@ -317,7 +384,7 @@ export default function Home() {
       </section>
 
       {/* ── PARTNERS ────────────────────────────────────── */}
-      <section className="partners section">
+      <section className="partners section" data-reveal>
         <div className="container">
           <div className="section-header-centered">
             <span className="section-label">Trusted By Industry Leaders</span>
@@ -343,12 +410,12 @@ export default function Home() {
       </section>
 
       {/* ── CTA BANNER ─────────────────────────────────── */}
-      <section className="cta-banner">
+      <section className="cta-banner" data-reveal>
         <div className="cta-banner__bg" aria-hidden="true" />
         <div className="container cta-banner__inner">
           <div>
-            <h2>Ready to Bring Your Design to Silicon?</h2>
-            <p>Talk to our engineering team about your process requirements, volume, and timeline.</p>
+            <h2>Ready to Partner with TERA?</h2>
+            <p>Talk to our engineering team about your package requirements, volume, and timeline.</p>
           </div>
           <div className="cta-banner__actions">
             <Link to="/contact" className="btn-primary">

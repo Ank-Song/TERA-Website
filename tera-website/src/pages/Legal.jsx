@@ -26,7 +26,7 @@ export default function Legal() {
 
           <h3>1. Who We Are</h3>
           <p>
-            Tera Semiconductor Ltda. ("Tera", "we", "us") is a semiconductor foundry headquartered at
+            Tera Semiconductor Ltda. ("Tera", "we", "us") is a semiconductor assembly and test company headquartered at
             Polo Industrial de Manaus, Manaus, Amazonas, Brazil. This Privacy Policy explains how we
             collect, use, and protect personal data submitted through this website.
           </p>
@@ -94,7 +94,7 @@ export default function Legal() {
           <h3>2. Purpose of This Website</h3>
           <p>
             This website is a B2B marketing and inquiry platform operated by Tera Semiconductor Ltda.
-            It is intended for business professionals evaluating semiconductor foundry services. It is
+            It is intended for business professionals evaluating semiconductor assembly and test services. It is
             not directed at consumers.
           </p>
 

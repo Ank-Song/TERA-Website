@@ -622,3 +622,79 @@
   .markets-grid { grid-template-columns: 1fr; }
   .hero__stats-inner { grid-template-columns: repeat(2, 1fr); }
 }
+
+/* ══════════════════════════════════════
+   SCROLL-REVEAL ANIMATIONS
+══════════════════════════════════════ */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+[data-reveal].revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Staggered cards — delay based on --card-index */
+.cap-card,
+.market-card,
+.diff-card,
+.partner-logo {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.55s ease, transform 0.55s ease,
+              box-shadow var(--transition), border-color var(--transition), background var(--transition);
+}
+.revealed .cap-card,
+.revealed .market-card,
+.revealed .diff-card,
+.revealed .partner-logo {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: calc(var(--card-index, 0) * 0.1s),
+                    calc(var(--card-index, 0) * 0.1s),
+                    0s, 0s, 0s;
+}
+
+/* ══════════════════════════════════════
+   HERO FLOATING PARTICLES
+══════════════════════════════════════ */
+.hero__particle {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--teal);
+  pointer-events: none;
+}
+
+.hero__particle--0 { width: 4px; height: 4px; top: 15%; left: 8%;  opacity: 0.2; animation: float0 28s ease-in-out infinite; }
+.hero__particle--1 { width: 3px; height: 3px; top: 30%; left: 20%; opacity: 0.15; animation: float1 35s ease-in-out infinite; }
+.hero__particle--2 { width: 5px; height: 5px; top: 60%; left: 12%; opacity: 0.18; animation: float2 22s ease-in-out infinite; }
+.hero__particle--3 { width: 3px; height: 3px; top: 75%; left: 35%; opacity: 0.12; animation: float3 40s ease-in-out infinite; }
+.hero__particle--4 { width: 4px; height: 4px; top: 20%; right: 30%; opacity: 0.15; animation: float0 32s ease-in-out infinite reverse; }
+.hero__particle--5 { width: 6px; height: 6px; top: 50%; right: 15%; opacity: 0.1;  animation: float1 25s ease-in-out infinite reverse; }
+.hero__particle--6 { width: 3px; height: 3px; top: 80%; right: 25%; opacity: 0.2; animation: float2 38s ease-in-out infinite; }
+.hero__particle--7 { width: 4px; height: 4px; top: 10%; right: 10%; opacity: 0.14; animation: float3 30s ease-in-out infinite reverse; }
+
+@keyframes float0 {
+  0%, 100% { transform: translate(0, 0); }
+  25%       { transform: translate(12px, -18px); }
+  50%       { transform: translate(-8px, -30px); }
+  75%       { transform: translate(16px, -12px); }
+}
+@keyframes float1 {
+  0%, 100% { transform: translate(0, 0); }
+  33%       { transform: translate(-14px, -20px); }
+  66%       { transform: translate(10px, -35px); }
+}
+@keyframes float2 {
+  0%, 100% { transform: translate(0, 0); }
+  20%       { transform: translate(8px, -15px); }
+  60%       { transform: translate(-12px, -28px); }
+  80%       { transform: translate(6px, -10px); }
+}
+@keyframes float3 {
+  0%, 100% { transform: translate(0, 0); }
+  40%       { transform: translate(-10px, -22px); }
+  70%       { transform: translate(14px, -16px); }
+}

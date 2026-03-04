@@ -145,7 +145,7 @@ export default function Contact() {
             with Our Team
           </h1>
           <p className="page-hero__subtitle">
-            Whether you're evaluating foundry partners, requesting a quote, or seeking technical information — our team responds within one business day.
+            Whether you're evaluating assembly and test partners, requesting a quote, or seeking technical information — our team responds within one business day.
           </p>
         </div>
       </section>
