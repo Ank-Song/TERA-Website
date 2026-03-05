@@ -32,6 +32,19 @@
   flex-shrink: 0;
 }
 
+.logo-img {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.logo-text-fallback {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .logo-mark {
   display: flex;
   align-items: center;

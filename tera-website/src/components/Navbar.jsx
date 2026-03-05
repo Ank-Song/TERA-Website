@@ -24,9 +24,17 @@ export default function Navbar() {
       <div className="navbar__inner container">
         {/* Logo */}
         <Link to="/" className="navbar__logo" onClick={() => setMenuOpen(false)}>
-          <span className="logo-mark">T</span>
-          <span className="logo-text">TERA</span>
-          <span className="logo-sub">Semiconductor</span>
+          <img
+            src="/logo.png"
+            alt="TERA Semiconductor"
+            className="logo-img"
+            onError={e => { e.currentTarget.style.display = 'none'; e.currentTarget.nextSibling.style.display = 'flex' }}
+          />
+          <span className="logo-text-fallback">
+            <span className="logo-mark">T</span>
+            <span className="logo-text">TERA</span>
+            <span className="logo-sub">Semiconductor</span>
+          </span>
         </Link>
 
         {/* Desktop nav */}
