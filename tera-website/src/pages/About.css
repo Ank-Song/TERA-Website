@@ -1,15 +1,22 @@
-/* Reuse page-hero from Technology.css — defined in Technology.css
-   For About we scope to .about-page for any overrides */
-
-.about-page .page-hero { /* inherits from Technology.css shared styles */ }
+/* ─── About hero — warmer dark ───────────────────── */
+.about-page .page-hero {
+  background: #08111E;
+}
+.about-page .page-hero__glow {
+  background: radial-gradient(circle, rgba(245,158,11,0.08) 0%, rgba(0,180,216,0.06) 50%, transparent 80%);
+  width: 700px; height: 700px;
+  top: -150px; right: -200px;
+}
 
 /* ─── About Sections ─────────────────────────────── */
 .about-section {
   padding: 96px 0;
 }
 
-.about-section--gray { background: var(--gray-100); }
-.about-section--dark { background: var(--navy-mid); }
+.about-section--gray {
+  background: var(--navy);
+}
+.about-section--dark { background: #07101D; }
 
 /* ─── Mission / Intro ────────────────────────────── */
 .about-intro {
@@ -21,17 +28,18 @@
 
 .about-intro__text p {
   font-size: 0.975rem;
-  color: var(--text-secondary);
+  color: rgba(255,255,255,0.6);
   line-height: 1.8;
 }
+.about-intro__text strong { color: var(--teal-light); }
 
 .about-intro__stats {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1px;
-  background: var(--gray-200);
-  border: 1px solid var(--gray-200);
-  border-radius: 8px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(0,180,216,0.15);
+  border-radius: 12px;
   overflow: hidden;
   align-self: start;
   position: sticky;
@@ -39,28 +47,33 @@
 }
 
 .about-stat {
-  background: var(--white);
+  background: rgba(255,255,255,0.03);
   padding: 24px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 4px;
   text-align: center;
+  transition: background var(--transition);
+}
+.about-stat:hover {
+  background: rgba(0,180,216,0.06);
 }
 
 .about-stat__value {
-  font-size: 1.7rem;
+  font-size: 1.8rem;
   font-weight: 800;
-  color: var(--navy);
+  color: var(--teal-light);
   letter-spacing: -0.02em;
+  text-shadow: 0 0 20px rgba(72,202,228,0.35);
 }
 
 .about-stat__label {
-  font-size: 0.72rem;
-  color: var(--text-secondary);
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.45);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-weight: 500;
+  letter-spacing: 0.1em;
+  font-weight: 600;
 }
 
 /* ─── Values ─────────────────────────────────────── */
@@ -70,35 +83,41 @@
   gap: 24px;
 }
 
+/* Glassmorphism value cards on dark bg */
 .value-card {
-  background: var(--white);
-  border: 1px solid var(--gray-200);
-  border-radius: 8px;
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-top: 1px solid rgba(255,255,255,0.14);
+  border-radius: 12px;
   padding: 32px;
-  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+  transition: transform var(--transition), box-shadow var(--transition), background var(--transition), border-color var(--transition);
 }
 .value-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-md);
-  border-color: var(--teal);
+  transform: translateY(-5px);
+  background: rgba(0,180,216,0.07);
+  border-color: rgba(0,180,216,0.25);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.3);
 }
 
 .value-card__icon {
   font-size: 2rem;
   display: block;
   margin-bottom: 16px;
+  filter: drop-shadow(0 0 8px rgba(0,180,216,0.3));
 }
 
 .value-card h3 {
   font-size: 1rem;
   font-weight: 700;
-  color: var(--navy);
+  color: var(--white);
   margin-bottom: 8px;
 }
 
 .value-card p {
   font-size: 0.875rem;
-  color: var(--text-secondary);
+  color: rgba(255,255,255,0.55);
   line-height: 1.65;
 }
 
@@ -161,70 +180,85 @@
   letter-spacing: 0.03em;
 }
 
-/* ─── Timeline ────────────────────────────────────── */
+/* ─── Timeline — editorial style ─────────────────── */
 .timeline {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: 32px;
+  padding-left: 40px;
 }
 
 .timeline-line {
   position: absolute;
-  left: 50%;
+  left: 8px;
   top: 0;
   bottom: 0;
   width: 2px;
-  background: rgba(0, 180, 216, 0.2);
-  transform: translateX(-50%);
+  background: linear-gradient(to bottom, var(--teal) 0%, rgba(0,180,216,0.1) 100%);
 }
 
+/* Left-aligned — no alternating */
 .timeline-item {
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
-  width: 50%;
-  padding-right: 40px;
-  padding-bottom: 40px;
+  width: 100%;
+  padding-right: 0;
+  padding-bottom: 0;
+  padding-left: 0;
   position: relative;
 }
 
 .timeline-item--right {
-  justify-content: flex-end;
-  align-self: flex-end;
-  width: 50%;
-  padding-right: 0;
-  padding-left: 40px;
-  margin-left: 50%;
+  justify-content: flex-start;
+  align-self: auto;
+  width: 100%;
+  padding-left: 0;
+  margin-left: 0;
 }
 
 .timeline-content {
-  background: var(--white);
-  border: 1px solid var(--gray-200);
+  position: relative;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
   border-left: 3px solid var(--teal);
   border-radius: 8px;
-  padding: 20px 24px;
-  max-width: 380px;
+  padding: 20px 28px;
+  max-width: 640px;
+  overflow: hidden;
 }
-
-.timeline-item--right .timeline-content {
-  text-align: left;
+/* Huge faded year behind content */
+.timeline-content::before {
+  content: attr(data-year);
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 4.5rem;
+  font-weight: 900;
+  color: rgba(0,180,216,0.06);
+  letter-spacing: -0.04em;
+  line-height: 1;
+  pointer-events: none;
+  font-family: 'Inter', sans-serif;
 }
 
 .timeline-year {
   display: block;
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   font-weight: 700;
   color: var(--teal);
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   margin-bottom: 6px;
+  font-family: 'Courier New', monospace;
 }
 
 .timeline-content p {
   font-size: 0.9rem;
-  color: var(--text-secondary);
-  line-height: 1.55;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.6;
 }
 
 .timeline-dot {
@@ -321,29 +355,34 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
-  padding: 16px;
-  background: var(--white);
-  border: 1px solid var(--gray-200);
+  padding: 14px 16px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
   border-radius: 6px;
   border-left: 3px solid var(--teal);
+  transition: background var(--transition);
 }
+.location-fact:hover { background: rgba(0,180,216,0.05); }
 
 .location-fact strong {
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.07em;
-  color: var(--navy);
+  letter-spacing: 0.1em;
+  color: var(--teal);
+  font-family: 'Courier New', monospace;
 }
 
 .location-fact span {
   font-size: 0.875rem;
-  color: var(--text-secondary);
+  color: rgba(255,255,255,0.55);
 }
 
+/* Coordinate card replacing dashed placeholder */
 .map-placeholder {
-  background: linear-gradient(135deg, #e8f4f8, #d1eaf5);
-  border: 2px dashed var(--teal);
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(0,180,216,0.18);
+  border-top: 2px solid var(--teal);
   border-radius: 12px;
   min-height: 340px;
   display: flex;
@@ -351,9 +390,22 @@
   justify-content: center;
   position: sticky;
   top: 96px;
+  overflow: hidden;
+}
+.map-placeholder::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,180,216,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,180,216,0.04) 1px, transparent 1px);
+  background-size: 32px 32px;
+  pointer-events: none;
 }
 
 .map-placeholder__inner {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -366,13 +418,14 @@
 .map-label {
   font-size: 1.1rem;
   font-weight: 700;
-  color: var(--navy);
+  color: var(--white);
 }
 
 .map-sublabel {
   font-size: 0.82rem;
-  color: var(--text-secondary);
-  font-style: italic;
+  color: rgba(255,255,255,0.45);
+  font-family: 'Courier New', monospace;
+  font-style: normal;
 }
 
 /* ─── CTA ────────────────────────────────────────── */

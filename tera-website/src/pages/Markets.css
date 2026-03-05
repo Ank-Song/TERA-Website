@@ -1,7 +1,18 @@
-/* ─── Market Overview Strip ──────────────────────── */
+/* ─── Markets page hero override ────────────────── */
+.mkt-page-hero {
+  background: #040A15;
+}
+.mkt-page-hero .page-hero__grid {
+  background-image:
+    linear-gradient(rgba(0,180,216,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,180,216,0.06) 1px, transparent 1px);
+  background-size: 80px 80px;
+}
+
+/* ─── Market Overview Strip — dark + accent colors ── */
 .market-overview {
-  background: var(--white);
-  border-bottom: 1px solid var(--gray-200);
+  background: #040A15;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
   padding: 20px 0;
   position: sticky;
   top: 72px;
@@ -21,46 +32,70 @@
   align-items: center;
   gap: 6px;
   padding: 8px 18px;
-  background: var(--gray-100);
-  border: 1px solid var(--gray-200);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
   border-radius: 24px;
   font-size: 0.82rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: rgba(255,255,255,0.7);
   transition: all var(--transition);
   white-space: nowrap;
 }
 
 .market-pill:hover {
-  background: var(--teal);
   color: var(--white);
   border-color: var(--teal);
+  background: rgba(0,180,216,0.12);
 }
+
+.market-pill[href="#automotive"]:hover { border-color: #F59E0B; background: rgba(245,158,11,0.12); }
+.market-pill[href="#iot"]:hover        { border-color: #10B981; background: rgba(16,185,129,0.12); }
+.market-pill[href="#mobile"]:hover     { border-color: #8B5CF6; background: rgba(139,92,246,0.12); }
+.market-pill[href="#industrial"]:hover { border-color: #F97316; background: rgba(249,115,22,0.12); }
+.market-pill[href="#medical"]:hover    { border-color: #EF4444; background: rgba(239,68,68,0.12); }
 
 .market-pill__stat {
   font-size: 0.7rem;
   font-weight: 700;
-  color: var(--teal-dark);
-  background: rgba(0, 180, 216, 0.1);
+  color: var(--teal);
+  background: rgba(0,180,216,0.1);
   padding: 2px 6px;
   border-radius: 10px;
 }
 
-.market-pill:hover .market-pill__stat {
-  color: var(--white);
-  background: rgba(255, 255, 255, 0.2);
-}
-
-/* ─── Market Section ─────────────────────────────── */
+/* ─── Market Section — all dark with accent border ── */
 .mkt-section {
   padding: 96px 0;
-  background: var(--white);
-  border-bottom: 1px solid var(--gray-100);
+  background: var(--navy);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  position: relative;
+  overflow: hidden;
 }
 
-.mkt-section--alt {
-  background: var(--gray-100);
+/* Left accent stripe */
+.mkt-section::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 4px;
+  background: var(--mkt-accent, var(--teal));
+  box-shadow: 4px 0 24px var(--mkt-accent, var(--teal));
 }
+/* Ambient glow from left */
+.mkt-section::after {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0; right: 0;
+  background: radial-gradient(ellipse at 0% 50%, rgba(var(--mkt-accent-rgb, 0,180,216),0.07) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* Accent color per market */
+.mkt-section[data-market="automotive"] { --mkt-accent: #F59E0B; --mkt-accent-rgb: 245,158,11; }
+.mkt-section[data-market="iot"]        { --mkt-accent: #10B981; --mkt-accent-rgb: 16,185,129; }
+.mkt-section[data-market="mobile"]     { --mkt-accent: #8B5CF6; --mkt-accent-rgb: 139,92,246; }
+.mkt-section[data-market="industrial"] { --mkt-accent: #F97316; --mkt-accent-rgb: 249,115,22; }
+.mkt-section[data-market="medical"]    { --mkt-accent: #EF4444; --mkt-accent-rgb: 239,68,68; }
 
 .mkt-grid {
   display: grid;
@@ -84,7 +119,7 @@
 .mkt-title {
   font-size: clamp(1.5rem, 3vw, 2.1rem);
   font-weight: 800;
-  color: var(--navy);
+  color: var(--white);
   line-height: 1.2;
   margin-bottom: 20px;
   letter-spacing: -0.01em;
@@ -92,7 +127,7 @@
 
 .mkt-desc {
   font-size: 0.95rem;
-  color: var(--text-secondary);
+  color: rgba(255,255,255,0.6);
   line-height: 1.8;
   margin-bottom: 32px;
   max-width: 560px;
@@ -110,7 +145,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: var(--navy);
+  color: var(--mkt-accent, var(--teal));
   margin-bottom: 12px;
 }
 
@@ -125,14 +160,14 @@
   align-items: flex-start;
   gap: 8px;
   font-size: 0.85rem;
-  color: var(--text-secondary);
+  color: rgba(255,255,255,0.6);
   line-height: 1.45;
 }
 
 .mkt-check {
   display: flex;
   align-items: center;
-  color: var(--teal);
+  color: var(--mkt-accent, var(--teal));
   flex-shrink: 0;
   margin-top: 1px;
 }
@@ -148,51 +183,60 @@
   font-size: 0.78rem;
   font-weight: 600;
   padding: 5px 10px;
-  background: rgba(0, 180, 216, 0.08);
-  color: var(--teal-dark);
-  border: 1px solid rgba(0, 180, 216, 0.2);
+  background: rgba(var(--mkt-accent-rgb, 0,180,216), 0.1);
+  color: var(--mkt-accent, var(--teal));
+  border: 1px solid rgba(var(--mkt-accent-rgb, 0,180,216), 0.25);
   border-radius: 4px;
   transition: background var(--transition), color var(--transition);
 }
 .mkt-tag:hover {
-  background: var(--teal);
+  background: var(--mkt-accent, var(--teal));
   color: var(--white);
 }
 
+/* Ticker-style metrics */
 .mkt-metrics {
   display: flex;
-  gap: 24px;
+  gap: 0;
   margin-bottom: 32px;
-  padding: 20px 24px;
-  background: var(--navy);
+  border: 1px solid rgba(255,255,255,0.08);
   border-radius: 8px;
+  overflow: hidden;
 }
 
 .mkt-metric {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  padding: 20px 28px;
+  flex: 1;
+  border-right: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.02);
 }
+.mkt-metric:last-child { border-right: none; }
 
 .mkt-metric__val {
-  font-size: 1.5rem;
+  font-size: 1.7rem;
   font-weight: 800;
-  color: var(--teal);
+  color: var(--mkt-accent, var(--teal));
   letter-spacing: -0.02em;
+  font-family: 'Courier New', monospace;
+  text-shadow: 0 0 16px rgba(var(--mkt-accent-rgb, 0,180,216), 0.4);
 }
 
 .mkt-metric__label {
-  font-size: 0.72rem;
-  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.68rem;
+  color: rgba(255, 255, 255, 0.4);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-weight: 500;
+  letter-spacing: 0.1em;
+  font-weight: 600;
 }
 
-/* ─── Market Visual Card ─────────────────────────── */
+/* ─── Market Visual Card — live data panel ───────── */
 .mkt-visual__card {
-  background: var(--navy);
-  border: 1px solid rgba(0, 180, 216, 0.2);
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(var(--mkt-accent-rgb, 0,180,216), 0.2);
+  border-top: 2px solid var(--mkt-accent, var(--teal));
   border-radius: 12px;
   padding: 32px;
 }
@@ -247,9 +291,9 @@
   background: linear-gradient(
     90deg,
     var(--teal-dark) 0%,
-    var(--teal-light) var(--pct, 0%),
-    rgba(255, 255, 255, 0.1) var(--pct, 0%),
-    rgba(255, 255, 255, 0.1) 100%
+    var(--mkt-accent, var(--teal-light)) var(--pct, 0%),
+    rgba(255, 255, 255, 0.08) var(--pct, 0%),
+    rgba(255, 255, 255, 0.08) 100%
   );
 }
 

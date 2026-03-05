@@ -42,6 +42,7 @@ const highlightSteps = new Set(['WB', 'DB', 'BS', 'FT'])
 const packages = [
   {
     name: 'eMMC',
+    pkgType: 'emmc',
     balls: '153-ball',
     size: '11.5 × 13 mm',
     die: '1× to 4× die',
@@ -52,6 +53,7 @@ const packages = [
   },
   {
     name: 'eMCP',
+    pkgType: 'emcp',
     balls: '221-ball',
     size: '11.5 × 13 mm',
     die: '1× to 4× die',
@@ -62,6 +64,7 @@ const packages = [
   },
   {
     name: 'BGA',
+    pkgType: 'bga',
     balls: '252 / 272-ball',
     size: '14 × 18 mm',
     die: '1× to 4× die',
@@ -72,6 +75,7 @@ const packages = [
   },
   {
     name: 'BGA (High-Density)',
+    pkgType: 'bgahd',
     balls: '132-ball',
     size: '12 × 18 mm',
     die: '4× to 8× die',
@@ -82,6 +86,7 @@ const packages = [
   },
   {
     name: 'LPDDR',
+    pkgType: 'lpddr',
     balls: '200-ball',
     size: '10 × 14.5 mm',
     die: '2× to 4× die',
@@ -146,19 +151,25 @@ export default function Technology() {
   return (
     <div className="tech-page">
 
-      {/* Page Hero */}
-      <section className="page-hero">
-        <div className="page-hero__bg" aria-hidden="true">
-          <div className="page-hero__grid" />
-          <div className="page-hero__glow" />
+      {/* Page Hero — Blueprint style */}
+      <section className="tech-hero">
+        <div className="tech-hero__bg" aria-hidden="true">
+          <div className="tech-hero__grid" />
+          <div className="tech-hero__glow" />
+          <div className="tech-hero__coords">
+            <span className="tech-hero__coord tech-hero__coord--tl">X: 03°06′S / Y: 60°01′W</span>
+            <span className="tech-hero__coord tech-hero__coord--tr">TERA-FACILITY-01</span>
+            <span className="tech-hero__coord tech-hero__coord--bl">CLASS 1K · CLASS 10K</span>
+            <span className="tech-hero__coord tech-hero__coord--br">UNIT CAP: 5,000,000 / MO</span>
+          </div>
         </div>
-        <div className="container page-hero__inner">
+        <div className="container tech-hero__inner">
           <span className="section-label">Technology</span>
-          <h1 className="page-hero__title">
+          <h1 className="tech-hero__title">
             Fully Automated Assembly<br />
             &amp; Test — Start to Finish
           </h1>
-          <p className="page-hero__subtitle">
+          <p className="tech-hero__subtitle">
             An 18-step back-end semiconductor process — from bare wafer to finished, tested package — executed inside a Class 1K and Class 10K cleanroom at 5 million units per month.
           </p>
           <Link to="/contact" className="btn-primary">
@@ -177,17 +188,19 @@ export default function Technology() {
             Every unit follows a controlled, fully automated sequence — from wafer preparation through final electrical test and shipping packaging. Steps marked with a teal border are key precision differentiators.
           </p>
 
-          <div className="process-flow">
-            {processSteps.map(({ abbr, name }, i) => (
-              <div
-                key={abbr}
-                className={`process-step${highlightSteps.has(abbr) ? ' process-step--key' : ''}`}
-              >
-                <span className="process-step__num">{String(i + 1).padStart(2, '0')}</span>
-                <span className="process-step__abbr">{abbr}</span>
-                <span className="process-step__name">{name}</span>
-              </div>
-            ))}
+          <div className="process-flow-wrap">
+            <div className="process-flow">
+              {processSteps.map(({ abbr, name }, i) => (
+                <div
+                  key={abbr}
+                  className={`process-step${highlightSteps.has(abbr) ? ' process-step--key' : ''}`}
+                >
+                  <span className="process-step__num">{String(i + 1).padStart(2, '0')}</span>
+                  <span className="process-step__abbr">{abbr}</span>
+                  <span className="process-step__name">{name}</span>
+                </div>
+              ))}
+            </div>
           </div>
 
           <div className="process-flow__legend">
@@ -208,8 +221,8 @@ export default function Technology() {
           </p>
 
           <div className="pkg-portfolio">
-            {packages.map(({ name, balls, size, die, desc, nand, tag, qual }) => (
-              <div key={name} className={`pkg-pkg-card${qual ? ' pkg-pkg-card--qual' : ''}`}>
+            {packages.map(({ name, pkgType, balls, size, die, desc, nand, tag, qual }) => (
+              <div key={name} className={`pkg-pkg-card${qual ? ' pkg-pkg-card--qual' : ''}`} data-pkg={pkgType}>
                 <div className="pkg-pkg-card__header">
                   <h3>{name}</h3>
                   <div className="pkg-pkg-card__badges">
@@ -296,12 +309,12 @@ export default function Technology() {
       </section>
 
       {/* ── Quality & Certifications ─────────────────────── */}
-      <section className="tech-section" id="quality">
+      <section className="tech-section tech-section--cert" id="quality">
         <div className="container">
           <span className="section-label">Quality &amp; Compliance</span>
           <div className="accent-line" />
-          <h2 className="section-title">Four ISO Certifications. One Supply Chain.</h2>
-          <p className="section-subtitle" style={{ marginBottom: 52 }}>
+          <h2 className="section-title light">Four ISO Certifications. One Supply Chain.</h2>
+          <p className="section-subtitle light" style={{ marginBottom: 52 }}>
             Every process step is controlled and audited under an integrated management system covering quality, environment, occupational health &amp; safety, and energy — all active and current.
           </p>
 
