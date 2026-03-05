@@ -106,7 +106,7 @@ export default function Markets() {
     <div className="markets-page">
 
       {/* Page Hero */}
-      <section className="page-hero">
+      <section className="page-hero mkt-page-hero">
         <div className="page-hero__bg" aria-hidden="true">
           <div className="page-hero__grid" />
           <div className="page-hero__glow" />
@@ -138,7 +138,7 @@ export default function Markets() {
 
       {/* Individual Market Sections */}
       {markets.map(({ id, icon, name, tagline, desc, requirements, products, growth, tam }, i) => (
-        <section key={id} id={id} className={`mkt-section${i % 2 !== 0 ? ' mkt-section--alt' : ''}`}>
+        <section key={id} id={id} className="mkt-section" data-market={id}>
           <div className="container mkt-grid">
             <div className="mkt-content">
               <div className="mkt-eyebrow">

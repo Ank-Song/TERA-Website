@@ -1,9 +1,8 @@
 import { Link } from 'react-router-dom'
 import { useEffect, useRef } from 'react'
-import ChipModel3D from '../components/ChipModel3D'
 import './Home.css'
 
-/* ── Circuit board canvas animation ────────────────── */
+/* ── Circuit board canvas animation (enhanced) ───────── */
 function CircuitCanvas() {
   const canvasRef = useRef(null)
 
@@ -12,8 +11,9 @@ function CircuitCanvas() {
     if (!canvas) return
     const ctx = canvas.getContext('2d')
     let animFrame
-    const CELL = 80
-    const PULSE_COUNT = 18
+    const CELL = 72  // slightly tighter grid
+    const PULSE_COUNT = 28
+    const BUS_EVERY = 4  // every 4th line is a "bus" (brighter)
 
     function resize() {
       canvas.width = canvas.offsetWidth
@@ -22,21 +22,30 @@ function CircuitCanvas() {
     resize()
     window.addEventListener('resize', resize)
 
+    // Pulse types: 'normal' teal, 'fast' white, 'burst' bright cyan
     function randomPulse(canvas) {
       const cols = Math.ceil(canvas.width / CELL)
       const rows = Math.ceil(canvas.height / CELL)
       const horiz = Math.random() > 0.5
       const c = Math.floor(Math.random() * (horiz ? cols - 1 : cols))
       const r = Math.floor(Math.random() * (horiz ? rows : rows - 1))
+      const typeRoll = Math.random()
+      const type = typeRoll < 0.08 ? 'fast' : typeRoll < 0.2 ? 'burst' : 'normal'
       return {
         x: c * CELL,
         y: r * CELL,
         dx: horiz ? CELL : 0,
         dy: horiz ? 0 : CELL,
         progress: Math.random(),
-        speed: 0.004 + Math.random() * 0.008,
-        alpha: 0.25 + Math.random() * 0.35,
-        tail: 0.18 + Math.random() * 0.12,
+        speed: type === 'fast' ? 0.014 + Math.random() * 0.012
+              : type === 'burst' ? 0.006 + Math.random() * 0.006
+              : 0.003 + Math.random() * 0.007,
+        alpha: type === 'fast' ? 0.5 + Math.random() * 0.3
+              : 0.22 + Math.random() * 0.32,
+        tail: type === 'fast' ? 0.08 + Math.random() * 0.06
+            : type === 'burst' ? 0.22 + Math.random() * 0.1
+            : 0.2 + Math.random() * 0.18,  // longer tails
+        type,
       }
     }
 
@@ -50,23 +59,28 @@ function CircuitCanvas() {
       const cols = Math.ceil(W / CELL) + 1
       const rows = Math.ceil(H / CELL) + 1
 
-      // Background grid traces
-      ctx.strokeStyle = 'rgba(0,180,216,0.05)'
-      ctx.lineWidth = 1
+      // Bus lines (every BUS_EVERY cols/rows are slightly brighter)
       ctx.shadowBlur = 0
       for (let c = 0; c <= cols; c++) {
+        const isBus = c % BUS_EVERY === 0
+        ctx.strokeStyle = isBus ? 'rgba(0,180,216,0.09)' : 'rgba(0,180,216,0.04)'
+        ctx.lineWidth = isBus ? 1 : 0.7
         ctx.beginPath(); ctx.moveTo(c * CELL, 0); ctx.lineTo(c * CELL, H); ctx.stroke()
       }
       for (let r = 0; r <= rows; r++) {
+        const isBus = r % BUS_EVERY === 0
+        ctx.strokeStyle = isBus ? 'rgba(0,180,216,0.09)' : 'rgba(0,180,216,0.04)'
+        ctx.lineWidth = isBus ? 1 : 0.7
         ctx.beginPath(); ctx.moveTo(0, r * CELL); ctx.lineTo(W, r * CELL); ctx.stroke()
       }
 
-      // Node dots at intersections
-      ctx.fillStyle = 'rgba(0,180,216,0.13)'
+      // Node dots — larger at bus intersections
       for (let c = 0; c <= cols; c++) {
         for (let r = 0; r <= rows; r++) {
+          const isBusNode = c % BUS_EVERY === 0 && r % BUS_EVERY === 0
+          ctx.fillStyle = isBusNode ? 'rgba(0,180,216,0.22)' : 'rgba(0,180,216,0.11)'
           ctx.beginPath()
-          ctx.arc(c * CELL, r * CELL, 1.8, 0, Math.PI * 2)
+          ctx.arc(c * CELL, r * CELL, isBusNode ? 2.8 : 1.6, 0, Math.PI * 2)
           ctx.fill()
         }
       }
@@ -88,25 +102,34 @@ function CircuitCanvas() {
         const x2 = p.x + p.dx * p.progress
         const y2 = p.y + p.dy * p.progress
 
-        // Glowing trail
+        // Choose colors by type
+        const [trailR, trailG, trailB] = p.type === 'fast'
+          ? [220, 240, 255]
+          : p.type === 'burst'
+          ? [0, 220, 255]
+          : [0, 180, 216]
+        const [headR, headG, headB] = p.type === 'fast'
+          ? [255, 255, 255]
+          : [72, 202, 228]
+
         const grad = ctx.createLinearGradient(x1, y1, x2, y2)
-        grad.addColorStop(0, 'rgba(0,180,216,0)')
-        grad.addColorStop(1, `rgba(0,180,216,${p.alpha})`)
+        grad.addColorStop(0, `rgba(${trailR},${trailG},${trailB},0)`)
+        grad.addColorStop(1, `rgba(${trailR},${trailG},${trailB},${p.alpha})`)
         ctx.strokeStyle = grad
-        ctx.lineWidth = 2
-        ctx.shadowBlur = 8
-        ctx.shadowColor = `rgba(0,180,216,${p.alpha * 0.6})`
+        ctx.lineWidth = p.type === 'fast' ? 1.5 : 2
+        ctx.shadowBlur = p.type === 'burst' ? 14 : 8
+        ctx.shadowColor = `rgba(${trailR},${trailG},${trailB},${p.alpha * 0.5})`
         ctx.beginPath()
         ctx.moveTo(x1, y1)
         ctx.lineTo(x2, y2)
         ctx.stroke()
 
-        // Bright head dot
-        ctx.shadowBlur = 14
-        ctx.shadowColor = `rgba(72,202,228,${p.alpha})`
-        ctx.fillStyle = `rgba(72,202,228,${p.alpha})`
+        const headR2 = p.type === 'burst' ? 3.5 : 2.5
+        ctx.shadowBlur = p.type === 'burst' ? 20 : 14
+        ctx.shadowColor = `rgba(${headR},${headG},${headB},${p.alpha})`
+        ctx.fillStyle = `rgba(${headR},${headG},${headB},${p.alpha})`
         ctx.beginPath()
-        ctx.arc(x2, y2, 2.5, 0, Math.PI * 2)
+        ctx.arc(x2, y2, headR2, 0, Math.PI * 2)
         ctx.fill()
         ctx.shadowBlur = 0
       }
@@ -329,36 +352,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── 3D CHIP SHOWCASE ───────────────────────────── */}
-      <section className="chip-showcase section section--dark" data-reveal>
-        <div className="chip-showcase__bg" aria-hidden="true">
-          <div className="chip-showcase__glow" />
-        </div>
-        <div className="container chip-showcase__inner">
-          <div className="chip-showcase__text" data-reveal-left>
-            <span className="section-label">Engineering Precision</span>
-            <div className="accent-line" />
-            <h2 className="section-title light">
-              Ball Grid Array<br />Package Assembly
-            </h2>
-            <p className="section-subtitle light">
-              Every chip that leaves our facility passes through an 18-step fully automated
-              back-end process — from bare wafer to BGA, eMMC, eMCP, and LPDDR packages
-              ready for your product line.
-            </p>
-            <ul className="chip-showcase__facts">
-              <li><span className="chip-showcase__fact-dot" />7 × 7 BGA solder ball matrix</li>
-              <li><span className="chip-showcase__fact-dot" />Gold wire bonds, Class 1K cleanroom</li>
-              <li><span className="chip-showcase__fact-dot" />1× to 8× die stacking capability</li>
-              <li><span className="chip-showcase__fact-dot" />Final electrical test on every unit</li>
-            </ul>
-          </div>
-          <div className="chip-showcase__canvas" data-reveal-right>
-            <ChipModel3D />
-          </div>
-        </div>
-      </section>
-
       {/* ── CAPABILITIES OVERVIEW ──────────────────────── */}
       <section className="capabilities section" data-reveal>
         <div className="container">
@@ -403,15 +396,15 @@ export default function Home() {
       </section>
 
       {/* ── MARKETS ────────────────────────────────────── */}
-      <section className="markets-section section section--gray" data-reveal-scale>
+      <section className="markets-section section section--dark" data-reveal-scale>
         <div className="container">
           <div className="section-header-centered">
             <span className="section-label">Markets We Serve</span>
             <div className="accent-line" style={{ margin: '0 auto 20px' }} />
-            <h2 className="section-title" style={{ textAlign: 'center' }}>
+            <h2 className="section-title light" style={{ textAlign: 'center' }}>
               Powering Innovation Across Industries
             </h2>
-            <p className="section-subtitle" style={{ textAlign: 'center', margin: '0 auto 48px' }}>
+            <p className="section-subtitle light" style={{ textAlign: 'center', margin: '0 auto 48px' }}>
               Our assembly and test services power critical applications in five demanding verticals.
             </p>
           </div>
@@ -462,15 +455,15 @@ export default function Home() {
       </section>
 
       {/* ── PARTNERS ────────────────────────────────────── */}
-      <section className="partners section" data-reveal-scale>
+      <section className="partners section section--dark" data-reveal-scale>
         <div className="container">
           <div className="section-header-centered">
             <span className="section-label">Trusted By Industry Leaders</span>
             <div className="accent-line" style={{ margin: '0 auto 16px' }} />
-            <h2 className="section-title" style={{ textAlign: 'center', fontSize: 'clamp(1.4rem, 3vw, 1.9rem)' }}>
+            <h2 className="section-title light" style={{ textAlign: 'center', fontSize: 'clamp(1.4rem, 3vw, 1.9rem)' }}>
               The Partner of Choice Across Five Verticals
             </h2>
-            <p className="section-subtitle" style={{ textAlign: 'center', margin: '0 auto 40px' }}>
+            <p className="section-subtitle light" style={{ textAlign: 'center', margin: '0 auto 40px' }}>
               From Tier-1 automotive suppliers to fast-growing IoT innovators — global OEMs rely on TERA for critical semiconductor manufacturing.
             </p>
           </div>

@@ -123,7 +123,7 @@ export default function About() {
           <div className="about-intro__text">
             <span className="section-label">Our Mission</span>
             <div className="accent-line" />
-            <h2 className="section-title">Brazil's Premier Semiconductor Assembly House</h2>
+            <h2 className="section-title light">Brazil's Premier Semiconductor Assembly House</h2>
             <p>
               Founded in October 2015, TERA — which stands for <strong>Trusted Engineering &amp; Reliable Assembly</strong> — was built on a single conviction: that world-class semiconductor back-end manufacturing belongs in Latin America. Operating within the Digitron Group and the Zona Franca de Manaus, we combine a fully automated 18-step assembly process with four active ISO certifications to deliver finished, tested semiconductor packages at scale.
             </p>
@@ -218,28 +218,28 @@ export default function About() {
           <div style={{ marginBottom: 52 }}>
             <span className="section-label">Company History</span>
             <div className="accent-line" />
-            <h2 className="section-title">Our Journey</h2>
-            <p className="section-subtitle">
+            <h2 className="section-title light">Our Journey</h2>
+            <p className="section-subtitle light">
               From a vision in 2015 to Manaus's most advanced semiconductor assembly operation.
             </p>
           </div>
           <div className="timeline">
+            <div className="timeline-line" />
             {timeline.map(({ year, event }, i) => (
-              <div key={year} className={`timeline-item${i % 2 === 0 ? '' : ' timeline-item--right'}`}>
-                <div className="timeline-content">
+              <div key={year} className="timeline-item">
+                <div className="timeline-content" data-year={year.split(' ').pop()}>
                   <span className="timeline-year">{year}</span>
                   <p>{event}</p>
                 </div>
                 <div className="timeline-dot" />
               </div>
             ))}
-            <div className="timeline-line" />
           </div>
         </div>
       </section>
 
       {/* Location */}
-      <section className="about-section about-section--gray" id="location">
+      <section className="about-section" id="location">
         <div className="container location-grid">
           <div>
             <span className="section-label">Location</span>
