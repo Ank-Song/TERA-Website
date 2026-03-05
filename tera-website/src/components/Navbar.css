@@ -33,10 +33,14 @@
 }
 
 .logo-img {
-  height: 40px;
+  height: 44px;
   width: auto;
+  max-width: 220px;
   object-fit: contain;
   display: block;
+  /* The logo has a dark bg — transparent PNG works best;
+     if the PNG has a solid bg, mix-blend-mode lightens it on dark */
+  mix-blend-mode: lighten;
 }
 
 .logo-text-fallback {

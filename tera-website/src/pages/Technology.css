@@ -112,7 +112,7 @@
   padding: 96px 0;
 }
 
-.tech-section--gray { background: var(--gray-100); }
+.tech-section--gray { background: var(--navy-mid); }
 .tech-section--dark {
   background: var(--navy-mid);
 }
@@ -525,27 +525,27 @@
   gap: 6px;
   padding: 18px 12px;
   min-width: 88px;
-  background: var(--white);
-  border-top: 1px solid var(--gray-200);
-  border-bottom: 1px solid var(--gray-200);
-  border-right: 1px solid var(--gray-200);
+  background: rgba(255,255,255,0.03);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  border-right: 1px solid rgba(255,255,255,0.08);
   position: relative;
   transition: background var(--transition);
 }
 .process-step:first-child {
-  border-left: 1px solid var(--gray-200);
+  border-left: 1px solid rgba(255,255,255,0.08);
   border-radius: 8px 0 0 8px;
 }
 .process-step:last-child {
   border-radius: 0 8px 8px 0;
 }
 .process-step:hover {
-  background: rgba(0,180,216,0.04);
+  background: rgba(0,200,232,0.06);
   z-index: 1;
 }
 
 .process-step--key {
-  background: linear-gradient(180deg, rgba(0,180,216,0.07) 0%, var(--white) 100%);
+  background: rgba(0,200,232,0.07);
   border-top: 2px solid var(--teal);
   z-index: 1;
 }
@@ -553,7 +553,7 @@
 .process-step__num {
   font-size: 0.6rem;
   font-weight: 700;
-  color: rgba(0,180,216,0.45);
+  color: rgba(0,200,232,0.4);
   letter-spacing: 0.05em;
   font-family: 'Courier New', monospace;
 }
@@ -561,11 +561,11 @@
 .process-step__abbr {
   font-size: 0.9rem;
   font-weight: 900;
-  color: var(--navy);
+  color: var(--text-primary);
   letter-spacing: -0.01em;
 }
 
-.process-step--key .process-step__abbr { color: var(--teal-dark); }
+.process-step--key .process-step__abbr { color: var(--teal-light); }
 
 .process-step__name {
   font-size: 0.6rem;
@@ -600,28 +600,29 @@
 }
 
 .pkg-pkg-card {
-  background: var(--white);
-  border: 1px solid var(--gray-200);
-  border-left: 4px solid var(--teal);
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-left: 3px solid var(--teal);
   border-radius: 8px;
   padding: 28px 24px;
   display: flex;
   flex-direction: column;
   gap: 12px;
-  transition: transform var(--transition), box-shadow var(--transition), border-left-color var(--transition);
+  transition: transform var(--transition), box-shadow var(--transition), border-left-color var(--transition), background var(--transition);
 }
 .pkg-pkg-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-3px);
   box-shadow: var(--shadow-md);
+  background: rgba(255,255,255,0.05);
 }
 /* Datasheet-style per-package-type colors */
-.pkg-pkg-card[data-pkg="emmc"]  { border-left-color: #00B4D8; }
+.pkg-pkg-card[data-pkg="emmc"]  { border-left-color: #00C8E8; }
 .pkg-pkg-card[data-pkg="emcp"]  { border-left-color: #0EA5E9; }
 .pkg-pkg-card[data-pkg="bga"]   { border-left-color: #8B5CF6; }
 .pkg-pkg-card[data-pkg="bgahd"] { border-left-color: #06B6D4; }
 .pkg-pkg-card[data-pkg="lpddr"] { border-left-color: #10B981; }
 .pkg-pkg-card--qual {
-  background: rgba(0,180,216,0.02);
+  background: rgba(0,200,232,0.03);
 }
 
 .pkg-pkg-card__header {
@@ -634,7 +635,7 @@
 .pkg-pkg-card__header h3 {
   font-size: 1.1rem;
   font-weight: 800;
-  color: var(--navy);
+  color: var(--text-primary);
   line-height: 1.2;
 }
 
@@ -661,7 +662,7 @@
 }
 .pkg-badge--qual {
   background: rgba(245,158,11,0.12);
-  color: #b45309;
+  color: #F59E0B;
   border: 1px solid rgba(245,158,11,0.3);
 }
 
@@ -674,10 +675,10 @@
   font-size: 0.72rem;
   font-weight: 600;
   padding: 3px 9px;
-  background: var(--gray-100);
-  color: var(--navy);
+  background: rgba(255,255,255,0.05);
+  color: rgba(226,235,245,0.7);
   border-radius: 3px;
-  border: 1px solid var(--gray-200);
+  border: 1px solid rgba(255,255,255,0.1);
   letter-spacing: 0.02em;
 }
 
@@ -689,13 +690,13 @@
 
 .pkg-pkg-card__sources {
   font-size: 0.75rem;
-  color: var(--text-secondary);
+  color: rgba(226,235,245,0.45);
   line-height: 1.5;
-  border-top: 1px solid var(--gray-200);
+  border-top: 1px solid rgba(255,255,255,0.07);
   padding-top: 12px;
   margin-top: auto;
 }
-.pkg-pkg-card__sources strong { color: var(--navy); }
+.pkg-pkg-card__sources strong { color: rgba(226,235,245,0.7); }
 
 /* ─── Cleanroom & Capacity ───────────────────────── */
 .cleanroom-grid {

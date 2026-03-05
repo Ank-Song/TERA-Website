@@ -11,12 +11,13 @@
 /* ─── About Sections ─────────────────────────────── */
 .about-section {
   padding: 96px 0;
+  background: var(--navy);
 }
 
 .about-section--gray {
-  background: var(--navy);
+  background: var(--navy-mid);
 }
-.about-section--dark { background: #07101D; }
+.about-section--dark { background: #070D1A; }
 
 /* ─── Mission / Intro ────────────────────────────── */
 .about-intro {
@@ -263,14 +264,15 @@
 
 .timeline-dot {
   position: absolute;
-  right: -7px;
+  left: -27px;
   top: 20px;
-  width: 14px;
-  height: 14px;
+  width: 13px;
+  height: 13px;
   background: var(--teal);
-  border: 3px solid var(--white);
+  border: 2px solid var(--navy);
   border-radius: 50%;
   flex-shrink: 0;
+  box-shadow: 0 0 10px rgba(0,200,232,0.5);
 }
 
 .timeline-item--right .timeline-dot {
