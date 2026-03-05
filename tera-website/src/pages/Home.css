@@ -202,8 +202,13 @@
 .hero__stat-value {
   font-size: 1.8rem;
   font-weight: 800;
-  color: var(--white);
+  color: var(--teal-light);
   letter-spacing: -0.02em;
+  text-shadow: 0 0 20px rgba(72,202,228,0.45);
+  transition: text-shadow 0.3s ease;
+}
+.hero__stat:hover .hero__stat-value {
+  text-shadow: 0 0 32px rgba(72,202,228,0.75);
 }
 
 .hero__stat-label {
@@ -233,6 +238,90 @@
 
 .section-header-centered {
   text-align: center;
+}
+
+/* ══════════════════════════════════════
+   CHIP SHOWCASE (3D)
+══════════════════════════════════════ */
+.chip-showcase {
+  position: relative;
+  overflow: hidden;
+  background: var(--navy);
+}
+
+.chip-showcase__bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.chip-showcase__glow {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,180,216,0.18) 0%, transparent 70%);
+  right: -100px;
+  top: 50%;
+  transform: translateY(-50%);
+  filter: blur(60px);
+}
+
+.chip-showcase__inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+
+.chip-showcase__text {
+  display: flex;
+  flex-direction: column;
+}
+
+.chip-showcase__facts {
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.chip-showcase__facts li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.95rem;
+  color: rgba(255,255,255,0.72);
+  font-weight: 500;
+}
+
+.chip-showcase__fact-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--teal);
+  flex-shrink: 0;
+  box-shadow: 0 0 8px var(--teal);
+}
+
+.chip-showcase__canvas {
+  height: 420px;
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  background: radial-gradient(ellipse at center, rgba(17,34,64,0.8) 0%, rgba(10,22,40,0.95) 100%);
+  border: 1px solid rgba(0,180,216,0.15);
+  box-shadow: 0 0 60px rgba(0,180,216,0.08), inset 0 0 40px rgba(0,180,216,0.04);
+}
+
+@media (max-width: 768px) {
+  .chip-showcase__inner {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .chip-showcase__canvas {
+    height: 320px;
+  }
 }
 
 /* ══════════════════════════════════════
@@ -560,14 +649,53 @@
 /* ══════════════════════════════════════
    SCROLL-REVEAL ANIMATIONS
 ══════════════════════════════════════ */
+
+/* Slide up */
 [data-reveal] {
   opacity: 0;
-  transform: translateY(32px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
+  transform: translateY(48px);
+  transition: opacity 0.75s cubic-bezier(0.22,1,0.36,1),
+              transform 0.75s cubic-bezier(0.22,1,0.36,1);
 }
 [data-reveal].revealed {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* Slide from left */
+[data-reveal-left] {
+  opacity: 0;
+  transform: translateX(-60px);
+  transition: opacity 0.8s cubic-bezier(0.22,1,0.36,1),
+              transform 0.8s cubic-bezier(0.22,1,0.36,1);
+}
+[data-reveal-left].revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Slide from right */
+[data-reveal-right] {
+  opacity: 0;
+  transform: translateX(60px);
+  transition: opacity 0.8s cubic-bezier(0.22,1,0.36,1),
+              transform 0.8s cubic-bezier(0.22,1,0.36,1);
+}
+[data-reveal-right].revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Scale + fade */
+[data-reveal-scale] {
+  opacity: 0;
+  transform: scale(0.94) translateY(32px);
+  transition: opacity 0.8s cubic-bezier(0.22,1,0.36,1),
+              transform 0.8s cubic-bezier(0.22,1,0.36,1);
+}
+[data-reveal-scale].revealed {
+  opacity: 1;
+  transform: scale(1) translateY(0);
 }
 
 /* Staggered cards — delay based on --card-index */
@@ -576,8 +704,9 @@
 .diff-card,
 .partner-logo {
   opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.55s ease, transform 0.55s ease,
+  transform: translateY(36px) scale(0.97);
+  transition: opacity 0.6s cubic-bezier(0.22,1,0.36,1),
+              transform 0.6s cubic-bezier(0.22,1,0.36,1),
               box-shadow var(--transition), border-color var(--transition), background var(--transition);
 }
 .revealed .cap-card,
@@ -585,9 +714,9 @@
 .revealed .diff-card,
 .revealed .partner-logo {
   opacity: 1;
-  transform: translateY(0);
-  transition-delay: calc(var(--card-index, 0) * 0.1s),
-                    calc(var(--card-index, 0) * 0.1s),
+  transform: translateY(0) scale(1);
+  transition-delay: calc(var(--card-index, 0) * 0.12s),
+                    calc(var(--card-index, 0) * 0.12s),
                     0s, 0s, 0s;
 }
 
