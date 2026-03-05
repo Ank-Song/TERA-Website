@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useEffect, useRef } from 'react'
+import ChipModel3D from '../components/ChipModel3D'
 import './Home.css'
 
 /* ── Circuit board canvas animation ────────────────── */
@@ -134,9 +135,10 @@ function useScrollReveal() {
           observer.unobserve(e.target)
         }
       }),
-      { threshold: 0.1 }
+      { threshold: 0.08 }
     )
-    document.querySelectorAll('[data-reveal]').forEach(el => observer.observe(el))
+    document.querySelectorAll('[data-reveal], [data-reveal-left], [data-reveal-right], [data-reveal-scale]')
+      .forEach(el => observer.observe(el))
     return () => observer.disconnect()
   }, [])
 }
@@ -327,6 +329,36 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── 3D CHIP SHOWCASE ───────────────────────────── */}
+      <section className="chip-showcase section section--dark" data-reveal>
+        <div className="chip-showcase__bg" aria-hidden="true">
+          <div className="chip-showcase__glow" />
+        </div>
+        <div className="container chip-showcase__inner">
+          <div className="chip-showcase__text" data-reveal-left>
+            <span className="section-label">Engineering Precision</span>
+            <div className="accent-line" />
+            <h2 className="section-title light">
+              Ball Grid Array<br />Package Assembly
+            </h2>
+            <p className="section-subtitle light">
+              Every chip that leaves our facility passes through an 18-step fully automated
+              back-end process — from bare wafer to BGA, eMMC, eMCP, and LPDDR packages
+              ready for your product line.
+            </p>
+            <ul className="chip-showcase__facts">
+              <li><span className="chip-showcase__fact-dot" />7 × 7 BGA solder ball matrix</li>
+              <li><span className="chip-showcase__fact-dot" />Gold wire bonds, Class 1K cleanroom</li>
+              <li><span className="chip-showcase__fact-dot" />1× to 8× die stacking capability</li>
+              <li><span className="chip-showcase__fact-dot" />Final electrical test on every unit</li>
+            </ul>
+          </div>
+          <div className="chip-showcase__canvas" data-reveal-right>
+            <ChipModel3D />
+          </div>
+        </div>
+      </section>
+
       {/* ── CAPABILITIES OVERVIEW ──────────────────────── */}
       <section className="capabilities section" data-reveal>
         <div className="container">
@@ -371,7 +403,7 @@ export default function Home() {
       </section>
 
       {/* ── MARKETS ────────────────────────────────────── */}
-      <section className="markets-section section section--gray" data-reveal>
+      <section className="markets-section section section--gray" data-reveal-scale>
         <div className="container">
           <div className="section-header-centered">
             <span className="section-label">Markets We Serve</span>
@@ -430,7 +462,7 @@ export default function Home() {
       </section>
 
       {/* ── PARTNERS ────────────────────────────────────── */}
-      <section className="partners section" data-reveal>
+      <section className="partners section" data-reveal-scale>
         <div className="container">
           <div className="section-header-centered">
             <span className="section-label">Trusted By Industry Leaders</span>
