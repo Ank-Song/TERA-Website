@@ -67,8 +67,8 @@
   display: flex;
   align-items: flex-start;
   gap: 12px;
-  background: rgba(0, 180, 216, 0.06);
-  border: 1px solid rgba(0, 180, 216, 0.2);
+  background: rgba(255,194,0,0.05);
+  border: 1px solid rgba(255,194,0,0.18);
   border-radius: 8px;
   padding: 16px;
 }
@@ -160,8 +160,8 @@
 .form-group select:focus,
 .form-group textarea:focus {
   border-color: var(--teal);
-  box-shadow: 0 0 0 3px rgba(0, 200, 232, 0.12);
-  background: rgba(0,200,232,0.04);
+  box-shadow: 0 0 0 3px rgba(255,194,0,0.12);
+  background: rgba(255,194,0,0.04);
 }
 
 .form-group input::placeholder,
@@ -171,7 +171,7 @@
 
 .form-group select {
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2300C8E8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23FFC200' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 14px center;
   background-color: rgba(255,255,255,0.05);
@@ -248,7 +248,7 @@
 .checkbox-label a {
   color: var(--teal-dark);
   text-decoration: underline;
-  text-decoration-color: rgba(0, 150, 183, 0.4);
+  text-decoration-color: rgba(204,154,0,0.4);
 }
 .checkbox-label a:hover { color: var(--teal); }
 
@@ -259,7 +259,7 @@
   justify-content: center;
   gap: 8px;
   background: var(--teal);
-  color: var(--white);
+  color: #080809;
   font-family: var(--font);
   font-size: 0.95rem;
   font-weight: 700;
@@ -275,7 +275,7 @@
 .btn-submit:hover:not(:disabled) {
   background: var(--teal-dark);
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(0, 180, 216, 0.35);
+  box-shadow: 0 6px 20px rgba(255,194,0,0.35);
 }
 
 .btn-submit:disabled {

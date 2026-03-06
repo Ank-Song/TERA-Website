@@ -68,7 +68,7 @@
   letter-spacing: 0.05em;
   text-transform: uppercase;
   padding: 5px 10px;
-  border: 1px solid rgba(0, 180, 216, 0.3);
+  border: 1px solid rgba(255,194,0,0.28);
   color: var(--teal-light);
   border-radius: 3px;
 }
@@ -95,7 +95,7 @@
 .footer__social-link:hover {
   border-color: var(--teal);
   color: var(--teal);
-  background: rgba(0, 180, 216, 0.08);
+  background: rgba(255,194,0,0.08);
 }
 
 /* Link groups */
