@@ -53,6 +53,121 @@ function useCounterAnimation() {
   }, [])
 }
 
+/* ── Particle canvas hook ───────────────────────────── */
+function useParticleCanvas(canvasRef) {
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')
+    let W, H, particles, animId
+    const mouse = { x: -9999, y: -9999 }
+
+    const COUNT = () => window.innerWidth < 768 ? 45 : 85
+    const CONNECT = 145
+    const MOUSE_R = 120
+
+    function resize() {
+      W = canvas.width = canvas.offsetWidth
+      H = canvas.height = canvas.offsetHeight
+    }
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * (W || window.innerWidth)
+        this.y = Math.random() * (H || window.innerHeight)
+        this.angle = Math.random() * Math.PI * 2
+        this.speed = 0.18 + Math.random() * 0.16   // very slow — long graceful paths
+        this.turn  = (Math.random() - 0.5) * 0.005  // tiny arc curvature
+        this.r     = 0.9 + Math.random() * 1.2
+        this.alpha = 0.20 + Math.random() * 0.45
+      }
+      update() {
+        this.angle += this.turn
+        const vx = Math.cos(this.angle) * this.speed
+        const vy = Math.sin(this.angle) * this.speed
+        // soft mouse repulsion
+        const dx = this.x - mouse.x
+        const dy = this.y - mouse.y
+        const d2 = dx * dx + dy * dy
+        if (d2 < MOUSE_R * MOUSE_R) {
+          const d = Math.sqrt(d2)
+          const f = (MOUSE_R - d) / MOUSE_R * 0.45
+          this.x += (dx / d) * f
+          this.y += (dy / d) * f
+        }
+        this.x += vx
+        this.y += vy
+        // wrap edges for continuous paths
+        if (this.x < -6) this.x = W + 6
+        else if (this.x > W + 6) this.x = -6
+        if (this.y < -6) this.y = H + 6
+        else if (this.y > H + 6) this.y = -6
+      }
+      draw() {
+        ctx.beginPath()
+        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2)
+        ctx.fillStyle = `rgba(255,255,255,${this.alpha})`
+        ctx.fill()
+      }
+    }
+
+    function init() {
+      resize()
+      particles = Array.from({ length: COUNT() }, () => new Particle())
+    }
+
+    function frame() {
+      ctx.clearRect(0, 0, W, H)
+
+      // draw connections beneath particles
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x
+          const dy = particles[i].y - particles[j].y
+          const dist = Math.sqrt(dx * dx + dy * dy)
+          if (dist < CONNECT) {
+            ctx.beginPath()
+            ctx.moveTo(particles[i].x, particles[i].y)
+            ctx.lineTo(particles[j].x, particles[j].y)
+            ctx.strokeStyle = `rgba(0,200,232,${(1 - dist / CONNECT) * 0.26})`
+            ctx.lineWidth = 0.55
+            ctx.stroke()
+          }
+        }
+      }
+
+      particles.forEach(p => { p.update(); p.draw() })
+      animId = requestAnimationFrame(frame)
+    }
+
+    init()
+    frame()
+
+    const onResize = () => {
+      resize()
+      particles.forEach(p => { p.x = Math.random() * W; p.y = Math.random() * H })
+    }
+    const hero = canvas.parentElement
+    const onMove = e => {
+      const rect = canvas.getBoundingClientRect()
+      mouse.x = e.clientX - rect.left
+      mouse.y = e.clientY - rect.top
+    }
+    const onLeave = () => { mouse.x = -9999; mouse.y = -9999 }
+
+    window.addEventListener('resize', onResize)
+    hero.addEventListener('mousemove', onMove)
+    hero.addEventListener('mouseleave', onLeave)
+
+    return () => {
+      cancelAnimationFrame(animId)
+      window.removeEventListener('resize', onResize)
+      hero.removeEventListener('mousemove', onMove)
+      hero.removeEventListener('mouseleave', onLeave)
+    }
+  }, [canvasRef])
+}
+
 /* ── Icon components (inline SVG) ──────────────────── */
 const ChipIcon = () => (
   <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -117,31 +232,18 @@ const differentiators = [
   { Icon: FlaskIcon, title: 'Dedicated R&D Entity',       desc: "inTera Tecnologia, our in-house R&D arm, drives continuous process development under Brazil's PADIS semiconductor incentive programme." },
 ]
 
-/* ── Partners (anonymized until NDA clearance) ──────── */
-const clients = [
-  'Tier-1 Automotive OEM',
-  'Global Mobile Chipset Maker',
-  'Industrial Controls Leader',
-  'Consumer Electronics Brand',
-  'Medical Device Manufacturer',
-  'IoT Platform Provider',
-]
-
 export default function Home() {
   useScrollReveal()
   useCounterAnimation()
+  const canvasRef = useRef(null)
+  useParticleCanvas(canvasRef)
 
   return (
     <div className="home">
 
       {/* ── HERO ──────────────────────────────────────── */}
       <section className="hero">
-        <div className="hero__orbs" aria-hidden="true">
-          <div className="hero__orb hero__orb--1" />
-          <div className="hero__orb hero__orb--2" />
-          <div className="hero__orb hero__orb--3" />
-          <div className="hero__orb hero__orb--4" />
-        </div>
+        <canvas ref={canvasRef} className="hero__canvas" aria-hidden="true" />
 
         <div className="hero__center">
           <div className="hero__eyebrow">
@@ -154,19 +256,10 @@ export default function Home() {
             <span className="hero__accent">Reliable Assembly.</span>
           </h1>
 
-          <p className="hero__group">TERA Semiconductor &mdash; Part of the Digitron Group</p>
-
           <p className="hero__subtitle">
-            Fully automated semiconductor package assembly and test — eMMC, eMCP, BGA, and LPDDR —
-            with four ISO certifications and 5M units/month capacity from the heart of Brazil.
+            Fully automated semiconductor package assembly and test —
+            four ISO certifications, 5M units/month capacity from the heart of Brazil.
           </p>
-
-          <div className="hero__certs">
-            <span className="hero__cert">✓ ISO 9001</span>
-            <span className="hero__cert">✓ ISO 14001</span>
-            <span className="hero__cert">✓ ISO 45001</span>
-            <span className="hero__cert">✓ ISO 50001</span>
-          </div>
 
           <div className="hero__actions">
             <Link to="/contact" className="btn-primary">
@@ -317,16 +410,9 @@ export default function Home() {
             <h2 className="section-title light" style={{ textAlign: 'center', fontSize: 'clamp(1.4rem, 3vw, 1.9rem)' }}>
               The Partner of Choice Across Five Verticals
             </h2>
-            <p className="section-subtitle light" style={{ textAlign: 'center', margin: '0 auto 40px' }}>
+            <p className="section-subtitle light" style={{ textAlign: 'center', margin: '0 auto 16px' }}>
               From Tier-1 automotive suppliers to fast-growing IoT innovators — global OEMs rely on TERA for critical semiconductor manufacturing.
             </p>
-          </div>
-          <div className="partners-strip">
-            {clients.map((name, i) => (
-              <div key={name} className="partner-logo" style={{'--card-index': i}}>
-                <span>{name}</span>
-              </div>
-            ))}
           </div>
           <p className="partners-nda">Client identities withheld under active NDA agreements.</p>
         </div>
