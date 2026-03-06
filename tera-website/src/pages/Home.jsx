@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import './Home.css'
 
 /* ── Scroll-reveal hook ─────────────────────────────── */
@@ -18,154 +18,6 @@ function useScrollReveal() {
       .forEach(el => observer.observe(el))
     return () => observer.disconnect()
   }, [])
-}
-
-/* ── Animated counter hook ──────────────────────────── */
-function useCounterAnimation() {
-  const hasRun = useRef(false)
-  useEffect(() => {
-    const statsEl = document.querySelector('.hero__stats')
-    if (!statsEl) return
-    const observer = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting && !hasRun.current) {
-        hasRun.current = true
-        document.querySelectorAll('[data-count]').forEach(el => {
-          const target = parseFloat(el.dataset.count)
-          const suffix = el.dataset.suffix || ''
-          const duration = 1500
-          const start = performance.now()
-          const isInt = Number.isInteger(target)
-          const step = ts => {
-            const progress = Math.min((ts - start) / duration, 1)
-            const eased = 1 - Math.pow(1 - progress, 3)
-            const current = target * eased
-            el.textContent = (isInt ? Math.floor(current) : current.toFixed(1)) + suffix
-            if (progress < 1) requestAnimationFrame(step)
-            else el.textContent = (isInt ? target : target.toFixed(1)) + suffix
-          }
-          requestAnimationFrame(step)
-        })
-        observer.disconnect()
-      }
-    }, { threshold: 0.5 })
-    observer.observe(statsEl)
-    return () => observer.disconnect()
-  }, [])
-}
-
-/* ── Particle canvas hook ───────────────────────────── */
-function useParticleCanvas(canvasRef) {
-  useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-    const ctx = canvas.getContext('2d')
-    let W, H, particles, animId
-    const mouse = { x: -9999, y: -9999 }
-
-    const COUNT = () => window.innerWidth < 768 ? 45 : 85
-    const CONNECT = 145
-    const MOUSE_R = 120
-
-    function resize() {
-      W = canvas.width = canvas.offsetWidth
-      H = canvas.height = canvas.offsetHeight
-    }
-
-    class Particle {
-      constructor() {
-        this.x = Math.random() * (W || window.innerWidth)
-        this.y = Math.random() * (H || window.innerHeight)
-        this.angle = Math.random() * Math.PI * 2
-        this.speed = 0.18 + Math.random() * 0.16   // very slow — long graceful paths
-        this.turn  = (Math.random() - 0.5) * 0.005  // tiny arc curvature
-        this.r     = 0.9 + Math.random() * 1.2
-        this.alpha = 0.20 + Math.random() * 0.45
-      }
-      update() {
-        this.angle += this.turn
-        const vx = Math.cos(this.angle) * this.speed
-        const vy = Math.sin(this.angle) * this.speed
-        // soft mouse repulsion
-        const dx = this.x - mouse.x
-        const dy = this.y - mouse.y
-        const d2 = dx * dx + dy * dy
-        if (d2 < MOUSE_R * MOUSE_R) {
-          const d = Math.sqrt(d2)
-          const f = (MOUSE_R - d) / MOUSE_R * 0.45
-          this.x += (dx / d) * f
-          this.y += (dy / d) * f
-        }
-        this.x += vx
-        this.y += vy
-        // wrap edges for continuous paths
-        if (this.x < -6) this.x = W + 6
-        else if (this.x > W + 6) this.x = -6
-        if (this.y < -6) this.y = H + 6
-        else if (this.y > H + 6) this.y = -6
-      }
-      draw() {
-        ctx.beginPath()
-        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2)
-        ctx.fillStyle = `rgba(255,255,255,${this.alpha})`
-        ctx.fill()
-      }
-    }
-
-    function init() {
-      resize()
-      particles = Array.from({ length: COUNT() }, () => new Particle())
-    }
-
-    function frame() {
-      ctx.clearRect(0, 0, W, H)
-
-      // draw connections beneath particles
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x
-          const dy = particles[i].y - particles[j].y
-          const dist = Math.sqrt(dx * dx + dy * dy)
-          if (dist < CONNECT) {
-            ctx.beginPath()
-            ctx.moveTo(particles[i].x, particles[i].y)
-            ctx.lineTo(particles[j].x, particles[j].y)
-            ctx.strokeStyle = `rgba(0,200,232,${(1 - dist / CONNECT) * 0.26})`
-            ctx.lineWidth = 0.55
-            ctx.stroke()
-          }
-        }
-      }
-
-      particles.forEach(p => { p.update(); p.draw() })
-      animId = requestAnimationFrame(frame)
-    }
-
-    init()
-    frame()
-
-    const onResize = () => {
-      resize()
-      particles.forEach(p => { p.x = Math.random() * W; p.y = Math.random() * H })
-    }
-    const hero = canvas.parentElement
-    const onMove = e => {
-      const rect = canvas.getBoundingClientRect()
-      mouse.x = e.clientX - rect.left
-      mouse.y = e.clientY - rect.top
-    }
-    const onLeave = () => { mouse.x = -9999; mouse.y = -9999 }
-
-    window.addEventListener('resize', onResize)
-    hero.addEventListener('mousemove', onMove)
-    hero.addEventListener('mouseleave', onLeave)
-
-    return () => {
-      cancelAnimationFrame(animId)
-      window.removeEventListener('resize', onResize)
-      hero.removeEventListener('mousemove', onMove)
-      hero.removeEventListener('mouseleave', onLeave)
-    }
-  }, [canvasRef])
 }
 
 /* ── Icon components (inline SVG) ──────────────────── */
@@ -207,11 +59,6 @@ const ArrowRight = () => (
     <path d="M5 12h14M12 5l7 7-7 7"/>
   </svg>
 )
-const ChevronDown = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M6 9l6 6 6-6"/>
-  </svg>
-)
 
 /* ── Market data ────────────────────────────────────── */
 const markets = [
@@ -234,73 +81,31 @@ const differentiators = [
 
 export default function Home() {
   useScrollReveal()
-  useCounterAnimation()
-  const canvasRef = useRef(null)
-  useParticleCanvas(canvasRef)
 
   return (
     <div className="home">
 
       {/* ── HERO ──────────────────────────────────────── */}
       <section className="hero">
-        <canvas ref={canvasRef} className="hero__canvas" aria-hidden="true" />
-
-        <div className="hero__center">
-          <div className="hero__eyebrow">
-            <span className="hero__dot" />
-            Semiconductor Assembly &amp; Test &nbsp;·&nbsp; Manaus, Brazil
-          </div>
-
+        <div className="hero__content">
           <h1 className="hero__title">
             Trusted Engineering.<br />
             <span className="hero__accent">Reliable Assembly.</span>
           </h1>
-
-          <p className="hero__subtitle">
-            Fully automated semiconductor package assembly and test —
-            four ISO certifications, 5M units/month capacity from the heart of Brazil.
-          </p>
-
-          <div className="hero__actions">
-            <Link to="/contact" className="btn-primary">
-              Request a Quote <ArrowRight />
-            </Link>
-            <Link to="/technology" className="btn-outline">
-              Explore Technology
-            </Link>
-          </div>
         </div>
 
-        {/* Stats bar */}
-        <div className="hero__stats">
-          <div className="container hero__stats-inner">
-            <div className="hero__stat">
-              <span className="hero__stat-value">Est. 2015</span>
-              <span className="hero__stat-label">Founded</span>
-            </div>
-            <div className="hero__stat">
-              <span className="hero__stat-value" data-count="46" data-suffix="">46</span>
-              <span className="hero__stat-label">Employees</span>
-            </div>
-            <div className="hero__stat">
-              <span className="hero__stat-value" data-count="5" data-suffix="M">5M</span>
-              <span className="hero__stat-label">Units / Month</span>
-            </div>
-            <div className="hero__stat">
-              <span className="hero__stat-value">3,700 m²</span>
-              <span className="hero__stat-label">Facility Area</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Scroll indicator */}
-        <div className="hero__scroll" aria-hidden="true">
-          <ChevronDown />
+        <div className="hero__bottom-bar">
+          <a href="#capabilities" className="hero__bottom-link">
+            Explore Technology <span className="hero__bottom-arrow">↓</span>
+          </a>
+          <Link to="/contact" className="hero__bottom-link">
+            Contact Us <span className="hero__bottom-arrow">→</span>
+          </Link>
         </div>
       </section>
 
       {/* ── CAPABILITIES OVERVIEW ──────────────────────── */}
-      <section className="capabilities section" data-reveal>
+      <section id="capabilities" className="capabilities section" data-reveal>
         <div className="container">
           <div className="capabilities__header">
             <div>
