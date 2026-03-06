@@ -126,7 +126,7 @@ button { font-family: var(--font); cursor: pointer; border: none; outline: none;
   font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--teal);
+  color: rgba(255, 255, 255, 0.42);
   margin-bottom: 12px;
   display: block;
 }
@@ -152,7 +152,7 @@ button { font-family: var(--font); cursor: pointer; border: none; outline: none;
 .accent-line {
   width: 36px;
   height: 2px;
-  background: var(--teal);
+  background: rgba(255, 255, 255, 0.18);
   border-radius: 2px;
   margin-bottom: 20px;
 }
