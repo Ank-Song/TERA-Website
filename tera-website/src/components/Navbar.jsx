@@ -51,10 +51,6 @@ export default function Navbar() {
           ))}
         </nav>
 
-        <Link to="/contact" className="btn-primary navbar__cta" onClick={() => setMenuOpen(false)}>
-          Request a Quote
-        </Link>
-
         {/* Hamburger */}
         <button
           className={`navbar__burger${menuOpen ? ' open' : ''}`}
@@ -79,9 +75,6 @@ export default function Navbar() {
             {label}
           </NavLink>
         ))}
-        <Link to="/contact" className="btn-primary" style={{ marginTop: 8 }} onClick={() => setMenuOpen(false)}>
-          Request a Quote
-        </Link>
       </div>
     </header>
   )
