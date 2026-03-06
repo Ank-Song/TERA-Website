@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import './Home.css'
 
 /* ── Scroll-reveal hook ─────────────────────────────── */
