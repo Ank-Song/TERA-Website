@@ -1,9 +1,9 @@
-/* ─── About hero — warmer dark ───────────────────── */
+/* ─── About hero ─────────────────────────────────── */
 .about-page .page-hero {
-  background: #08111E;
+  background: var(--navy);
 }
 .about-page .page-hero__glow {
-  background: radial-gradient(circle, rgba(245,158,11,0.08) 0%, rgba(0,180,216,0.06) 50%, transparent 80%);
+  background: radial-gradient(circle, rgba(255,194,0,0.09) 0%, rgba(200,100,0,0.05) 50%, transparent 80%);
   width: 700px; height: 700px;
   top: -150px; right: -200px;
 }
@@ -12,12 +12,13 @@
 .about-section {
   padding: 96px 0;
   background: var(--navy);
+  border-top: 1px solid rgba(255,255,255,0.04);
 }
 
 .about-section--gray {
-  background: var(--navy-mid);
+  background: var(--navy);
 }
-.about-section--dark { background: #070D1A; }
+.about-section--dark { background: var(--navy); }
 
 /* ─── Mission / Intro ────────────────────────────── */
 .about-intro {
@@ -39,7 +40,7 @@
   grid-template-columns: 1fr 1fr;
   gap: 1px;
   background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(0,180,216,0.15);
+  border: 1px solid rgba(255,194,0,0.15);
   border-radius: 12px;
   overflow: hidden;
   align-self: start;
@@ -58,7 +59,7 @@
   transition: background var(--transition);
 }
 .about-stat:hover {
-  background: rgba(0,180,216,0.06);
+  background: rgba(255,194,0,0.05);
 }
 
 .about-stat__value {
@@ -66,7 +67,7 @@
   font-weight: 800;
   color: var(--teal-light);
   letter-spacing: -0.02em;
-  text-shadow: 0 0 20px rgba(72,202,228,0.35);
+  text-shadow: 0 0 20px rgba(255,216,77,0.4);
 }
 
 .about-stat__label {
@@ -97,8 +98,8 @@
 }
 .value-card:hover {
   transform: translateY(-5px);
-  background: rgba(0,180,216,0.07);
-  border-color: rgba(0,180,216,0.25);
+  background: rgba(255,194,0,0.06);
+  border-color: rgba(255,194,0,0.22);
   box-shadow: 0 16px 40px rgba(0,0,0,0.3);
 }
 
@@ -106,7 +107,7 @@
   font-size: 2rem;
   display: block;
   margin-bottom: 16px;
-  filter: drop-shadow(0 0 8px rgba(0,180,216,0.3));
+  filter: drop-shadow(0 0 8px rgba(255,194,0,0.25));
 }
 
 .value-card h3 {
@@ -141,7 +142,7 @@
 }
 .cert-card:hover {
   background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(0, 180, 216, 0.4);
+  border-color: rgba(255,194,0,0.35);
 }
 
 .cert-card__check {
@@ -151,7 +152,7 @@
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: rgba(0, 180, 216, 0.15);
+  background: rgba(255,194,0,0.12);
   color: var(--teal);
   flex-shrink: 0;
   margin-top: 2px;
@@ -196,7 +197,7 @@
   top: 0;
   bottom: 0;
   width: 2px;
-  background: linear-gradient(to bottom, var(--teal) 0%, rgba(0,180,216,0.1) 100%);
+  background: linear-gradient(to bottom, var(--teal) 0%, rgba(255,194,0,0.1) 100%);
 }
 
 /* Left-aligned — no alternating */
@@ -238,7 +239,7 @@
   transform: translateY(-50%);
   font-size: 4.5rem;
   font-weight: 900;
-  color: rgba(0,180,216,0.06);
+  color: rgba(255,194,0,0.05);
   letter-spacing: -0.04em;
   line-height: 1;
   pointer-events: none;
@@ -272,7 +273,7 @@
   border: 2px solid var(--navy);
   border-radius: 50%;
   flex-shrink: 0;
-  box-shadow: 0 0 10px rgba(0,200,232,0.5);
+  box-shadow: 0 0 10px rgba(255,194,0,0.55);
 }
 
 .timeline-item--right .timeline-dot {
@@ -364,7 +365,7 @@
   border-left: 3px solid var(--teal);
   transition: background var(--transition);
 }
-.location-fact:hover { background: rgba(0,180,216,0.05); }
+.location-fact:hover { background: rgba(255,194,0,0.05); }
 
 .location-fact strong {
   font-size: 0.72rem;
@@ -383,7 +384,7 @@
 /* Coordinate card replacing dashed placeholder */
 .map-placeholder {
   background: rgba(255,255,255,0.02);
-  border: 1px solid rgba(0,180,216,0.18);
+  border: 1px solid rgba(255,194,0,0.18);
   border-top: 2px solid var(--teal);
   border-radius: 12px;
   min-height: 340px;
@@ -399,8 +400,8 @@
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(0,180,216,0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,180,216,0.04) 1px, transparent 1px);
+    linear-gradient(rgba(255,194,0,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,194,0,0.03) 1px, transparent 1px);
   background-size: 32px 32px;
   pointer-events: none;
 }
@@ -432,8 +433,9 @@
 
 /* ─── CTA ────────────────────────────────────────── */
 .about-cta {
-  background: linear-gradient(135deg, var(--navy), #0d3060, var(--navy-mid));
+  background: var(--navy);
   padding: 80px 0;
+  border-top: 1px solid rgba(255,255,255,0.04);
 }
 
 .about-cta__inner {

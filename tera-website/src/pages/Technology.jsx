@@ -185,27 +185,25 @@ export default function Technology() {
           <div className="accent-line" />
           <h2 className="section-title">18-Step Back-End Assembly Process</h2>
           <p className="section-subtitle" style={{ marginBottom: 48 }}>
-            Every unit follows a controlled, fully automated sequence — from wafer preparation through final electrical test and shipping packaging. Steps marked with a teal border are key precision differentiators.
+            Every unit follows a controlled, fully automated sequence — from wafer preparation through final electrical test and shipping packaging. Steps marked with a gold border are key precision differentiators.
           </p>
 
-          <div className="process-flow-wrap">
-            <div className="process-flow">
-              {processSteps.map(({ abbr, name }, i) => (
-                <div
-                  key={abbr}
-                  className={`process-step${highlightSteps.has(abbr) ? ' process-step--key' : ''}`}
-                >
-                  <span className="process-step__num">{String(i + 1).padStart(2, '0')}</span>
-                  <span className="process-step__abbr">{abbr}</span>
-                  <span className="process-step__name">{name}</span>
-                </div>
-              ))}
-            </div>
+          <div className="process-grid">
+            {processSteps.map(({ abbr, name }, i) => (
+              <div
+                key={abbr}
+                className={`process-cell${highlightSteps.has(abbr) ? ' process-cell--key' : ''}`}
+              >
+                <span className="process-cell__num">{String(i + 1).padStart(2, '0')}</span>
+                <span className="process-cell__abbr">{abbr}</span>
+                <span className="process-cell__name">{name}</span>
+              </div>
+            ))}
           </div>
 
-          <div className="process-flow__legend">
-            <span className="process-flow__legend-dot" />
-            Teal border = precision-critical step
+          <div className="process-grid__legend">
+            <span className="process-grid__legend-dot" />
+            Gold border = precision-critical step
           </div>
         </div>
       </section>

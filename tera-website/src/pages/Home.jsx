@@ -1,152 +1,6 @@
 import { Link } from 'react-router-dom'
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import './Home.css'
-
-/* ── Circuit board canvas animation (enhanced) ───────── */
-function CircuitCanvas() {
-  const canvasRef = useRef(null)
-
-  useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-    const ctx = canvas.getContext('2d')
-    let animFrame
-    const CELL = 72  // slightly tighter grid
-    const PULSE_COUNT = 28
-    const BUS_EVERY = 4  // every 4th line is a "bus" (brighter)
-
-    function resize() {
-      canvas.width = canvas.offsetWidth
-      canvas.height = canvas.offsetHeight
-    }
-    resize()
-    window.addEventListener('resize', resize)
-
-    // Pulse types: 'normal' teal, 'fast' white, 'burst' bright cyan
-    function randomPulse(canvas) {
-      const cols = Math.ceil(canvas.width / CELL)
-      const rows = Math.ceil(canvas.height / CELL)
-      const horiz = Math.random() > 0.5
-      const c = Math.floor(Math.random() * (horiz ? cols - 1 : cols))
-      const r = Math.floor(Math.random() * (horiz ? rows : rows - 1))
-      const typeRoll = Math.random()
-      const type = typeRoll < 0.08 ? 'fast' : typeRoll < 0.2 ? 'burst' : 'normal'
-      return {
-        x: c * CELL,
-        y: r * CELL,
-        dx: horiz ? CELL : 0,
-        dy: horiz ? 0 : CELL,
-        progress: Math.random(),
-        speed: type === 'fast' ? 0.014 + Math.random() * 0.012
-              : type === 'burst' ? 0.006 + Math.random() * 0.006
-              : 0.003 + Math.random() * 0.007,
-        alpha: type === 'fast' ? 0.5 + Math.random() * 0.3
-              : 0.22 + Math.random() * 0.32,
-        tail: type === 'fast' ? 0.08 + Math.random() * 0.06
-            : type === 'burst' ? 0.22 + Math.random() * 0.1
-            : 0.2 + Math.random() * 0.18,  // longer tails
-        type,
-      }
-    }
-
-    const pulses = Array.from({ length: PULSE_COUNT }, () => randomPulse(canvas))
-
-    function draw() {
-      const W = canvas.width
-      const H = canvas.height
-      ctx.clearRect(0, 0, W, H)
-
-      const cols = Math.ceil(W / CELL) + 1
-      const rows = Math.ceil(H / CELL) + 1
-
-      // Bus lines (every BUS_EVERY cols/rows are slightly brighter)
-      ctx.shadowBlur = 0
-      for (let c = 0; c <= cols; c++) {
-        const isBus = c % BUS_EVERY === 0
-        ctx.strokeStyle = isBus ? 'rgba(0,180,216,0.09)' : 'rgba(0,180,216,0.04)'
-        ctx.lineWidth = isBus ? 1 : 0.7
-        ctx.beginPath(); ctx.moveTo(c * CELL, 0); ctx.lineTo(c * CELL, H); ctx.stroke()
-      }
-      for (let r = 0; r <= rows; r++) {
-        const isBus = r % BUS_EVERY === 0
-        ctx.strokeStyle = isBus ? 'rgba(0,180,216,0.09)' : 'rgba(0,180,216,0.04)'
-        ctx.lineWidth = isBus ? 1 : 0.7
-        ctx.beginPath(); ctx.moveTo(0, r * CELL); ctx.lineTo(W, r * CELL); ctx.stroke()
-      }
-
-      // Node dots — larger at bus intersections
-      for (let c = 0; c <= cols; c++) {
-        for (let r = 0; r <= rows; r++) {
-          const isBusNode = c % BUS_EVERY === 0 && r % BUS_EVERY === 0
-          ctx.fillStyle = isBusNode ? 'rgba(0,180,216,0.22)' : 'rgba(0,180,216,0.11)'
-          ctx.beginPath()
-          ctx.arc(c * CELL, r * CELL, isBusNode ? 2.8 : 1.6, 0, Math.PI * 2)
-          ctx.fill()
-        }
-      }
-
-      // Pulses
-      for (let i = 0; i < pulses.length; i++) {
-        const p = pulses[i]
-        p.progress += p.speed
-
-        if (p.progress >= 1) {
-          pulses[i] = randomPulse(canvas)
-          pulses[i].progress = 0
-          continue
-        }
-
-        const tailStart = Math.max(0, p.progress - p.tail)
-        const x1 = p.x + p.dx * tailStart
-        const y1 = p.y + p.dy * tailStart
-        const x2 = p.x + p.dx * p.progress
-        const y2 = p.y + p.dy * p.progress
-
-        // Choose colors by type
-        const [trailR, trailG, trailB] = p.type === 'fast'
-          ? [220, 240, 255]
-          : p.type === 'burst'
-          ? [0, 220, 255]
-          : [0, 180, 216]
-        const [headR, headG, headB] = p.type === 'fast'
-          ? [255, 255, 255]
-          : [72, 202, 228]
-
-        const grad = ctx.createLinearGradient(x1, y1, x2, y2)
-        grad.addColorStop(0, `rgba(${trailR},${trailG},${trailB},0)`)
-        grad.addColorStop(1, `rgba(${trailR},${trailG},${trailB},${p.alpha})`)
-        ctx.strokeStyle = grad
-        ctx.lineWidth = p.type === 'fast' ? 1.5 : 2
-        ctx.shadowBlur = p.type === 'burst' ? 14 : 8
-        ctx.shadowColor = `rgba(${trailR},${trailG},${trailB},${p.alpha * 0.5})`
-        ctx.beginPath()
-        ctx.moveTo(x1, y1)
-        ctx.lineTo(x2, y2)
-        ctx.stroke()
-
-        const headR2 = p.type === 'burst' ? 3.5 : 2.5
-        ctx.shadowBlur = p.type === 'burst' ? 20 : 14
-        ctx.shadowColor = `rgba(${headR},${headG},${headB},${p.alpha})`
-        ctx.fillStyle = `rgba(${headR},${headG},${headB},${p.alpha})`
-        ctx.beginPath()
-        ctx.arc(x2, y2, headR2, 0, Math.PI * 2)
-        ctx.fill()
-        ctx.shadowBlur = 0
-      }
-
-      animFrame = requestAnimationFrame(draw)
-    }
-
-    draw()
-
-    return () => {
-      cancelAnimationFrame(animFrame)
-      window.removeEventListener('resize', resize)
-    }
-  }, [])
-
-  return <canvas ref={canvasRef} className="hero__canvas" aria-hidden="true" />
-}
 
 /* ── Scroll-reveal hook ─────────────────────────────── */
 function useScrollReveal() {
@@ -282,12 +136,12 @@ export default function Home() {
 
       {/* ── HERO ──────────────────────────────────────── */}
       <section className="hero">
-        <div className="hero__bg" aria-hidden="true">
-          <div className="hero__grid" />
-          <div className="hero__glow hero__glow--1" />
-          <div className="hero__glow hero__glow--2" />
+        <div className="hero__orbs" aria-hidden="true">
+          <div className="hero__orb hero__orb--1" />
+          <div className="hero__orb hero__orb--2" />
+          <div className="hero__orb hero__orb--3" />
+          <div className="hero__orb hero__orb--4" />
         </div>
-        <CircuitCanvas />
 
         <div className="hero__center">
           <div className="hero__eyebrow">
