@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react'
 import { NavLink, Link } from 'react-router-dom'
+import { useLanguage } from '../i18n/LangContext'
 import './Navbar.css'
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const { lang, t, toggle } = useLanguage()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
@@ -13,10 +15,10 @@ export default function Navbar() {
   }, [])
 
   const links = [
-    { to: '/', label: 'Home' },
-    { to: '/technology', label: 'Technology' },
-    { to: '/markets', label: 'Markets' },
-    { to: '/about', label: 'About Us' },
+    { to: '/', label: t('nav.home') },
+    { to: '/technology', label: t('nav.technology') },
+    { to: '/markets', label: t('nav.markets') },
+    { to: '/about', label: t('nav.about') },
   ]
 
   return (
@@ -51,6 +53,13 @@ export default function Navbar() {
           ))}
         </nav>
 
+        {/* Language toggle (desktop) */}
+        <div className="lang-toggle">
+          <button className={`lang-btn${lang === 'en' ? ' active' : ''}`} onClick={() => lang !== 'en' && toggle()}>EN</button>
+          <span className="lang-sep">|</span>
+          <button className={`lang-btn${lang === 'pt' ? ' active' : ''}`} onClick={() => lang !== 'pt' && toggle()}>PT</button>
+        </div>
+
         {/* Hamburger */}
         <button
           className={`navbar__burger${menuOpen ? ' open' : ''}`}
@@ -64,6 +73,12 @@ export default function Navbar() {
 
       {/* Mobile drawer */}
       <div className={`navbar__mobile${menuOpen ? ' open' : ''}`}>
+        {/* Language toggle (mobile) */}
+        <div className="lang-toggle">
+          <button className={`lang-btn${lang === 'en' ? ' active' : ''}`} onClick={() => lang !== 'en' && toggle()}>EN</button>
+          <span className="lang-sep">|</span>
+          <button className={`lang-btn${lang === 'pt' ? ' active' : ''}`} onClick={() => lang !== 'pt' && toggle()}>PT</button>
+        </div>
         {links.map(({ to, label }) => (
           <NavLink
             key={to}

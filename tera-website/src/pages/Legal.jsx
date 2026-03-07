@@ -1,6 +1,9 @@
+import { useLanguage } from '../i18n/LangContext'
 import './Legal.css'
 
 export default function Legal() {
+  const { t } = useLanguage()
+
   return (
     <div className="legal-page">
       <section className="page-hero">
@@ -9,11 +12,9 @@ export default function Legal() {
           <div className="page-hero__glow" />
         </div>
         <div className="container page-hero__inner">
-          <span className="section-label">Legal</span>
-          <h1 className="page-hero__title">Legal Information</h1>
-          <p className="page-hero__subtitle">
-            Privacy Policy, Terms of Use, and Cookie Settings for Tera Semiconductor.
-          </p>
+          <span className="section-label">{t('legal.hero.label')}</span>
+          <h1 className="page-hero__title">{t('legal.hero.title')}</h1>
+          <p className="page-hero__subtitle">{t('legal.hero.subtitle')}</p>
         </div>
       </section>
 
@@ -21,7 +22,7 @@ export default function Legal() {
 
         {/* ── Privacy Policy ───────────────────────────── */}
         <section id="privacy" className="legal-section">
-          <h2>Privacy Policy</h2>
+          <h2>{t('legal.privacy.heading')}</h2>
           <p className="legal-effective">Effective Date: January 1, 2025</p>
 
           <h3>1. Who We Are</h3>
@@ -82,7 +83,7 @@ export default function Legal() {
 
         {/* ── Terms of Use ─────────────────────────────── */}
         <section id="terms" className="legal-section">
-          <h2>Terms of Use</h2>
+          <h2>{t('legal.terms.heading')}</h2>
           <p className="legal-effective">Effective Date: January 1, 2025</p>
 
           <h3>1. Acceptance</h3>
@@ -138,7 +139,7 @@ export default function Legal() {
 
         {/* ── Cookie Settings ──────────────────────────── */}
         <section id="cookies" className="legal-section">
-          <h2>Cookie Settings</h2>
+          <h2>{t('legal.cookies.heading')}</h2>
           <p className="legal-effective">Last updated: January 1, 2025</p>
 
           <h3>Cookies We Use</h3>
@@ -175,7 +176,7 @@ export default function Legal() {
 
         <div className="legal-contact-note">
           <p>
-            Questions about any of the above? Email us at{' '}
+            {t('legal.contact_note')}{' '}
             <a href="mailto:privacy@terasemi.com.br">privacy@terasemi.com.br</a>
           </p>
         </div>

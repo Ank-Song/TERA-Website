@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { useEffect, useRef } from 'react'
 import './App.css'
+import { LangProvider } from './i18n/LangContext'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Home from './pages/Home'
@@ -130,6 +131,7 @@ function ParticleBackground() {
 function App() {
   return (
     <BrowserRouter basename={import.meta.env.BASE_URL}>
+      <LangProvider>
       <ParticleBackground />
       <ScrollToTop />
       <Navbar />
@@ -144,6 +146,7 @@ function App() {
         </Routes>
       </main>
       <Footer />
+      </LangProvider>
     </BrowserRouter>
   )
 }

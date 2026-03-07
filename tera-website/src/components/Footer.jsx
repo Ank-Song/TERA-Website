@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { useLanguage } from '../i18n/LangContext'
 import './Footer.css'
 
 const LinkedInIcon = () => (
@@ -17,6 +18,8 @@ const MailIcon = () => (
 )
 
 export default function Footer() {
+  const { t } = useLanguage()
+
   return (
     <footer className="footer">
       <div className="footer__top container">
@@ -26,10 +29,7 @@ export default function Footer() {
             <span className="logo-text">TERA</span>
             <span className="logo-sub">Semiconductor</span>
           </div>
-          <p className="footer__tagline">
-            Advanced semiconductor manufacturing solutions from the heart of Brazil.
-            Precision, reliability, and innovation — engineered for your success.
-          </p>
+          <p className="footer__tagline">{t('footer.tagline')}</p>
           <div className="footer__badges">
             <span className="badge">ISO 9001 Certified</span>
             <span className="badge">IATF 16949</span>
@@ -46,37 +46,37 @@ export default function Footer() {
         </div>
 
         <div className="footer__links-group">
-          <h4>Company</h4>
+          <h4>{t('footer.company_col')}</h4>
           <ul>
-            <li><Link to="/about">About Tera</Link></li>
-            <li><Link to="/about#mission">Our Mission</Link></li>
-            <li><Link to="/about#location">Location</Link></li>
-            <li><Link to="/contact">Careers</Link></li>
+            <li><Link to="/about">{t('footer.links.about_tera')}</Link></li>
+            <li><Link to="/about#mission">{t('footer.links.our_mission')}</Link></li>
+            <li><Link to="/about#location">{t('footer.links.location')}</Link></li>
+            <li><Link to="/contact">{t('footer.links.careers')}</Link></li>
           </ul>
         </div>
 
         <div className="footer__links-group">
-          <h4>Technology</h4>
+          <h4>{t('footer.technology_col')}</h4>
           <ul>
-            <li><Link to="/technology">Process Capabilities</Link></li>
-            <li><Link to="/technology#memory">Memory Products</Link></li>
-            <li><Link to="/technology#packaging">Packaging & Testing</Link></li>
-            <li><Link to="/technology#design">Design Services</Link></li>
+            <li><Link to="/technology">{t('footer.links.process_capabilities')}</Link></li>
+            <li><Link to="/technology#memory">{t('footer.links.memory_products')}</Link></li>
+            <li><Link to="/technology#packaging">{t('footer.links.packaging_testing')}</Link></li>
+            <li><Link to="/technology#design">{t('footer.links.design_services')}</Link></li>
           </ul>
         </div>
 
         <div className="footer__links-group">
-          <h4>Markets</h4>
+          <h4>{t('footer.markets_col')}</h4>
           <ul>
-            <li><Link to="/markets#automotive">Automotive</Link></li>
-            <li><Link to="/markets#iot">IoT & Consumer</Link></li>
-            <li><Link to="/markets#industrial">Industrial</Link></li>
-            <li><Link to="/markets#medical">Medical</Link></li>
+            <li><Link to="/markets#automotive">{t('footer.links.automotive')}</Link></li>
+            <li><Link to="/markets#iot">{t('footer.links.iot_consumer')}</Link></li>
+            <li><Link to="/markets#industrial">{t('footer.links.industrial')}</Link></li>
+            <li><Link to="/markets#medical">{t('footer.links.medical')}</Link></li>
           </ul>
         </div>
 
         <div className="footer__contact-col">
-          <h4>Contact</h4>
+          <h4>{t('footer.contact_col')}</h4>
           <address>
             <p>Polo Industrial de Manaus</p>
             <p>Manaus, Amazonas — Brazil</p>
@@ -85,18 +85,18 @@ export default function Footer() {
             sales@terasemi.com.br
           </a>
           <Link to="/contact" className="btn-primary-dark footer__cta">
-            Request a Quote
+            {t('footer.links.request_quote')}
           </Link>
         </div>
       </div>
 
       <div className="footer__bottom">
         <div className="container footer__bottom-inner">
-          <p>© {new Date().getFullYear()} Tera Semiconductor Ltda. All rights reserved.</p>
+          <p>{t('footer.copyright')}</p>
           <div className="footer__legal">
-            <Link to="/legal#privacy">Privacy Policy</Link>
-            <Link to="/legal#terms">Terms of Use</Link>
-            <Link to="/legal#cookies">Cookie Settings</Link>
+            <Link to="/legal#privacy">{t('footer.privacy_policy')}</Link>
+            <Link to="/legal#terms">{t('footer.terms_of_use')}</Link>
+            <Link to="/legal#cookies">{t('footer.cookie_settings')}</Link>
           </div>
         </div>
       </div>
