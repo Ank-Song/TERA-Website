@@ -21,7 +21,7 @@ export default function Navbar() {
 
   return (
     <header className={`navbar${scrolled ? ' scrolled' : ''}`}>
-      <div className="navbar__inner container">
+      <div className="navbar__inner">
         {/* Logo */}
         <Link to="/" className="navbar__logo" onClick={() => setMenuOpen(false)}>
           <img

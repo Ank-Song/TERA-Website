@@ -3,7 +3,8 @@
 ══════════════════════════════════════ */
 .hero {
   position: relative;
-  min-height: 100vh;
+  height: 100vh;
+  margin-top: -72px; /* slide behind the transparent navbar */
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -15,6 +16,7 @@
   display: flex;
   align-items: flex-end;
   padding: 0 72px 72px;
+  padding-top: 72px; /* clear the navbar */
   position: relative;
   z-index: 1;
 }
@@ -22,7 +24,7 @@
 .hero__title {
   font-family: var(--font);
   font-size: clamp(3.6rem, 8vw, 7rem);
-  font-weight: 800;
+  font-weight: 900;
   line-height: 1.0;
   letter-spacing: -0.03em;
   color: var(--white);
