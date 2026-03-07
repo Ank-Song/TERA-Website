@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { useLanguage, useStrings } from '../i18n/LangContext'
 import './About.css'
 
 const ArrowRight = () => (
@@ -13,89 +14,25 @@ const CheckIcon = () => (
   </svg>
 )
 
-const values = [
-  {
-    icon: '🎯',
-    title: 'Precision',
-    desc: 'Every process step is optimized for repeatability and consistency — from ≤2 µm wire bond accuracy to full 3D ball scan inspection on every unit.',
-  },
-  {
-    icon: '🤝',
-    title: 'Partnership',
-    desc: 'We act as an extension of our customers\' engineering teams — transparent, collaborative, and committed to mutual success.',
-  },
-  {
-    icon: '🔬',
-    title: 'Innovation',
-    desc: 'inTera Tecnologia, our dedicated R&D entity, continuously develops new process capabilities under Brazil\'s PADIS semiconductor incentive programme.',
-  },
-  {
-    icon: '🌱',
-    title: 'Sustainability',
-    desc: 'ISO 14001 and ISO 50001 certified. Manufacturing in Manaus gives us access to predominantly hydroelectric power — enabling a greener semiconductor supply chain.',
-  },
-  {
-    icon: '🏆',
-    title: 'Excellence',
-    desc: 'Four active ISO certifications covering quality, environment, occupational health and energy management — audited annually, not just claimed.',
-  },
-  {
-    icon: '🌍',
-    title: 'Brazilian Pride',
-    desc: 'Rooted in Manaus since 2015, part of the Digitron Group, and committed to building Latin America\'s most trusted semiconductor assembly operation.',
-  },
+const VALUE_ICONS = ['🎯', '🤝', '🔬', '🌱', '🏆', '🌍']
+
+/* Certifications — code hardcoded, title/valid from i18n */
+const CERT_CODES = [
+  { code: 'ISO 9001:2015', color: 'teal' },
+  { code: 'ISO 14001:2015', color: 'teal' },
+  { code: 'ISO 45001:2018', color: 'teal' },
+  { code: 'ISO 50001:2018', color: 'teal' },
+  { code: 'PADIS', color: 'blue' },
+  { code: 'RBA Member', color: 'blue' },
 ]
 
-const certifications = [
-  {
-    code: 'ISO 9001:2015',
-    title: 'Quality Management',
-    valid: 'Valid to 30 Nov 2026',
-    color: 'teal',
-  },
-  {
-    code: 'ISO 14001:2015',
-    title: 'Environmental Management',
-    valid: 'Valid to 01 Dec 2026',
-    color: 'teal',
-  },
-  {
-    code: 'ISO 45001:2018',
-    title: 'Occupational Health & Safety',
-    valid: 'Valid to 30 Aug 2027',
-    color: 'teal',
-  },
-  {
-    code: 'ISO 50001:2018',
-    title: 'Energy Management',
-    valid: 'Valid to 02 Jun 2027',
-    color: 'teal',
-  },
-  {
-    code: 'PADIS',
-    title: 'Brazilian Semiconductor Incentive',
-    valid: 'Programa de Incentivos ao Setor de Semicondutores',
-    color: 'blue',
-  },
-  {
-    code: 'RBA Member',
-    title: 'Responsible Business Alliance',
-    valid: 'Ethical & sustainable supply chain',
-    color: 'blue',
-  },
-]
-
-const timeline = [
-  { year: 'Oct 2015', event: 'TERA Semiconductor founded within the Digitron Group in Manaus, Amazonas. "Trusted Engineering & Reliable Assembly" — built to serve Brazil and the Americas.' },
-  { year: '2016', event: 'Cleanroom becomes operational. ISO 9001:2015 Quality Management certification achieved. First package assembly lines qualified.' },
-  { year: '2019', event: 'ISO 14001:2015 Environmental Management certification achieved, formalising our commitment to responsible manufacturing.' },
-  { year: '2021', event: 'ISO 45001:2018 Occupational Health & Safety certification achieved. Workforce safety standards reach international benchmark.' },
-  { year: '2022', event: 'inTera Tecnologia R&D entity established — dedicated scientific research and development under the PADIS incentive programme.' },
-  { year: '2024', event: 'ISO 50001:2018 Energy Management certification achieved. Four active ISO certifications now cover quality, environment, safety and energy.' },
-  { year: '2025', event: 'Production reaches 5 million units per month. 20% of cleanroom area remains available for new customer programmes and equipment expansion.' },
-]
+/* Timeline — year hardcoded, event from i18n */
+const TIMELINE_YEARS = ['Oct 2015', '2016', '2019', '2021', '2022', '2024', '2025']
 
 export default function About() {
+  const { t } = useLanguage()
+  const s = useStrings()
+
   return (
     <div className="about-page">
 
@@ -106,14 +43,12 @@ export default function About() {
           <div className="page-hero__glow" />
         </div>
         <div className="container page-hero__inner">
-          <span className="section-label">About Tera</span>
+          <span className="section-label">{t('about.hero.label')}</span>
           <h1 className="page-hero__title">
             Trusted Engineering.<br />
             Reliable Assembly.
           </h1>
-          <p className="page-hero__subtitle">
-            TERA Semiconductor — part of the Digitron Group — is a fully automated semiconductor package assembly and test facility headquartered in Manaus, Brazil, inside the Zona Franca de Manaus special economic zone.
-          </p>
+          <p className="page-hero__subtitle">{t('about.hero.subtitle')}</p>
         </div>
       </section>
 
@@ -121,44 +56,38 @@ export default function About() {
       <section className="about-section" id="mission">
         <div className="container about-intro">
           <div className="about-intro__text">
-            <span className="section-label">Our Mission</span>
+            <span className="section-label">{t('about.mission.label')}</span>
             <div className="accent-line" />
-            <h2 className="section-title light">Brazil's Premier Semiconductor Assembly House</h2>
-            <p>
-              Founded in October 2015, TERA — which stands for <strong>Trusted Engineering &amp; Reliable Assembly</strong> — was built on a single conviction: that world-class semiconductor back-end manufacturing belongs in Latin America. Operating within the Digitron Group and the Zona Franca de Manaus, we combine a fully automated 18-step assembly process with four active ISO certifications to deliver finished, tested semiconductor packages at scale.
-            </p>
-            <p style={{ marginTop: 16 }}>
-              Our 3,700 m² facility houses both a Class 1K and a Class 10K cleanroom, capable of producing 5 million units per month. With 20% of our cleanroom area still available for new equipment, we are actively expanding capacity alongside our customers.
-            </p>
-            <p style={{ marginTop: 16 }}>
-              Research and development is conducted through <strong>inTera Tecnologia</strong>, our dedicated R&amp;D entity, under Brazil's PADIS semiconductor incentive programme. As a member of the Responsible Business Alliance, we hold ourselves to the highest standards of ethical and sustainable manufacturing.
-            </p>
+            <h2 className="section-title light">{t('about.mission.title')}</h2>
+            <p dangerouslySetInnerHTML={{ __html: t('about.mission.body1') }} />
+            <p style={{ marginTop: 16 }} dangerouslySetInnerHTML={{ __html: t('about.mission.body2') }} />
+            <p style={{ marginTop: 16 }} dangerouslySetInnerHTML={{ __html: t('about.mission.body3') }} />
           </div>
 
           <div className="about-intro__stats">
             <div className="about-stat">
               <span className="about-stat__value">2015</span>
-              <span className="about-stat__label">Founded</span>
+              <span className="about-stat__label">{t('about.stats.founded')}</span>
             </div>
             <div className="about-stat">
               <span className="about-stat__value">46</span>
-              <span className="about-stat__label">Employees</span>
+              <span className="about-stat__label">{t('about.stats.employees')}</span>
             </div>
             <div className="about-stat">
               <span className="about-stat__value">5M</span>
-              <span className="about-stat__label">Units / Month</span>
+              <span className="about-stat__label">{t('about.stats.units_month')}</span>
             </div>
             <div className="about-stat">
               <span className="about-stat__value">3,700 m²</span>
-              <span className="about-stat__label">Facility Area</span>
+              <span className="about-stat__label">{t('about.stats.facility_area')}</span>
             </div>
             <div className="about-stat">
               <span className="about-stat__value">4</span>
-              <span className="about-stat__label">ISO Certifications</span>
+              <span className="about-stat__label">{t('about.stats.iso_certs')}</span>
             </div>
             <div className="about-stat">
               <span className="about-stat__value">18</span>
-              <span className="about-stat__label">Process Steps</span>
+              <span className="about-stat__label">{t('about.stats.process_steps')}</span>
             </div>
           </div>
         </div>
@@ -168,16 +97,16 @@ export default function About() {
       <section className="about-section about-section--gray">
         <div className="container">
           <div className="section-header-centered" style={{ textAlign: 'center', marginBottom: 52 }}>
-            <span className="section-label">Our Values</span>
+            <span className="section-label">{t('about.values.label')}</span>
             <div className="accent-line" style={{ margin: '0 auto 16px' }} />
-            <h2 className="section-title">What Drives Us Every Day</h2>
+            <h2 className="section-title">{t('about.values.title')}</h2>
           </div>
           <div className="values-grid">
-            {values.map(({ icon, title, desc }) => (
-              <div key={title} className="value-card">
-                <span className="value-card__icon">{icon}</span>
-                <h3>{title}</h3>
-                <p>{desc}</p>
+            {s.about.values.items.map((item, i) => (
+              <div key={i} className="value-card">
+                <span className="value-card__icon">{VALUE_ICONS[i]}</span>
+                <h3>{item.title}</h3>
+                <p>{item.desc}</p>
               </div>
             ))}
           </div>
@@ -188,26 +117,27 @@ export default function About() {
       <section className="about-section about-section--dark" id="certifications">
         <div className="container">
           <div style={{ marginBottom: 52 }}>
-            <span className="section-label">Certifications &amp; Programmes</span>
+            <span className="section-label">{t('about.certifications.label')}</span>
             <div className="accent-line" />
-            <h2 className="section-title light">Verified Quality at Every Level</h2>
-            <p className="section-subtitle light">
-              Four active ISO certifications — quality, environment, health &amp; safety, and energy — plus membership in Brazil's PADIS semiconductor incentive programme and the Responsible Business Alliance.
-            </p>
+            <h2 className="section-title light">{t('about.certifications.title')}</h2>
+            <p className="section-subtitle light">{t('about.certifications.subtitle')}</p>
           </div>
           <div className="cert-grid">
-            {certifications.map(({ code, title, valid }) => (
-              <div key={code} className="cert-card">
-                <div className="cert-card__check">
-                  <CheckIcon />
+            {CERT_CODES.map(({ code }, i) => {
+              const cert = s.about.certifications.items[i]
+              return (
+                <div key={code} className="cert-card">
+                  <div className="cert-card__check">
+                    <CheckIcon />
+                  </div>
+                  <div>
+                    <span className="cert-card__code">{code}</span>
+                    <span className="cert-card__title">{cert.title}</span>
+                    <span className="cert-card__valid">{cert.valid}</span>
+                  </div>
                 </div>
-                <div>
-                  <span className="cert-card__code">{code}</span>
-                  <span className="cert-card__title">{title}</span>
-                  <span className="cert-card__valid">{valid}</span>
-                </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         </div>
       </section>
@@ -216,20 +146,18 @@ export default function About() {
       <section className="about-section">
         <div className="container">
           <div style={{ marginBottom: 52 }}>
-            <span className="section-label">Company History</span>
+            <span className="section-label">{t('about.timeline.label')}</span>
             <div className="accent-line" />
-            <h2 className="section-title light">Our Journey</h2>
-            <p className="section-subtitle light">
-              From a vision in 2015 to Manaus's most advanced semiconductor assembly operation.
-            </p>
+            <h2 className="section-title light">{t('about.timeline.title')}</h2>
+            <p className="section-subtitle light">{t('about.timeline.subtitle')}</p>
           </div>
           <div className="timeline">
             <div className="timeline-line" />
-            {timeline.map(({ year, event }, i) => (
+            {TIMELINE_YEARS.map((year, i) => (
               <div key={year} className="timeline-item">
                 <div className="timeline-content" data-year={year.split(' ').pop()}>
                   <span className="timeline-year">{year}</span>
-                  <p>{event}</p>
+                  <p>{s.about.timeline.items[i].event}</p>
                 </div>
                 <div className="timeline-dot" />
               </div>
@@ -242,36 +170,36 @@ export default function About() {
       <section className="about-section" id="location">
         <div className="container location-grid">
           <div>
-            <span className="section-label">Location</span>
+            <span className="section-label">{t('about.location.label')}</span>
             <div className="accent-line" />
-            <h2 className="section-title">Manaus, Amazonas — Brazil</h2>
+            <h2 className="section-title">{t('about.location.title')}</h2>
             <p className="section-subtitle" style={{ marginBottom: 24 }}>
-              Located within the Zona Franca de Manaus (ZFM) — Brazil's special economic free trade zone established in 1967 — TERA benefits from significant tax incentives under PADIS and PPB programmes, while sitting just minutes from an international airport and harbor.
+              {t('about.location.subtitle')}
             </p>
             <div className="location-facts">
               <div className="location-fact">
-                <strong>Address</strong>
-                <span>Av. Torquato Tapajós #7503, Tarumã, Manaus/AM — CEP 69041-025</span>
+                <strong>{t('about.location.facts.address_label')}</strong>
+                <span>{t('about.location.facts.address_val')}</span>
               </div>
               <div className="location-fact">
-                <strong>Airport</strong>
-                <span>10 min / 8.4 km from Eduardo Gomes International Airport (MAO)</span>
+                <strong>{t('about.location.facts.airport_label')}</strong>
+                <span>{t('about.location.facts.airport_val')}</span>
               </div>
               <div className="location-fact">
-                <strong>Harbor</strong>
-                <span>25 km from Manaus Harbor — access to sea freight routes</span>
+                <strong>{t('about.location.facts.harbor_label')}</strong>
+                <span>{t('about.location.facts.harbor_val')}</span>
               </div>
               <div className="location-fact">
-                <strong>Domestic Shipping</strong>
-                <span>São Paulo ~3 days · Bahia ~5 days · Rio Grande do Sul ~5 days</span>
+                <strong>{t('about.location.facts.shipping_label')}</strong>
+                <span>{t('about.location.facts.shipping_val')}</span>
               </div>
               <div className="location-fact">
-                <strong>Economic Zone</strong>
-                <span>Zona Franca de Manaus (ZFM) — tax incentives via PADIS &amp; PPB programmes</span>
+                <strong>{t('about.location.facts.zone_label')}</strong>
+                <span>{t('about.location.facts.zone_val')}</span>
               </div>
             </div>
             <Link to="/contact" className="btn-primary" style={{ marginTop: 32, display: 'inline-flex' }}>
-              Get in Touch <ArrowRight />
+              {t('about.cta.contact_us')} <ArrowRight />
             </Link>
           </div>
           <div className="map-placeholder" aria-label="Map of Manaus, Brazil">
@@ -293,11 +221,11 @@ export default function About() {
       {/* CTA */}
       <section className="about-cta">
         <div className="container about-cta__inner">
-          <h2>Partner with Tera</h2>
-          <p>Contact our team to discuss how TERA can support your semiconductor assembly and test requirements.</p>
+          <h2>{t('about.cta.title')}</h2>
+          <p>{t('about.cta.subtitle')}</p>
           <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link to="/contact" className="btn-primary">Contact Us <ArrowRight /></Link>
-            <Link to="/technology" className="btn-outline">Our Technology</Link>
+            <Link to="/contact" className="btn-primary">{t('about.cta.contact_us')} <ArrowRight /></Link>
+            <Link to="/technology" className="btn-outline">{t('about.cta.our_technology')}</Link>
           </div>
         </div>
       </section>

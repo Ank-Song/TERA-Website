@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useEffect } from 'react'
+import { useLanguage, useStrings } from '../i18n/LangContext'
 import './Home.css'
 
 /* ── Scroll-reveal hook ─────────────────────────────── */
@@ -60,27 +61,14 @@ const ArrowRight = () => (
   </svg>
 )
 
-/* ── Market data ────────────────────────────────────── */
-const markets = [
-  { icon: '🚗', title: 'Automotive', desc: 'AEC-Q100 qualified components for ADAS, infotainment, and EV powertrains with stringent reliability requirements.' },
-  { icon: '📡', title: 'IoT & Consumer', desc: 'Low-power, high-density memory solutions enabling the next generation of connected devices and smart home products.' },
-  { icon: '📱', title: 'Mobile', desc: 'High-performance eMMC and NAND Flash optimized for smartphones, tablets, and mobile computing platforms.' },
-  { icon: '⚙️', title: 'Industrial', desc: 'Robust semiconductor solutions engineered for extreme temperatures, vibration, and long operational lifecycles.' },
-  { icon: '🏥', title: 'Medical', desc: 'Precision-grade chips for diagnostic equipment, patient monitoring systems, and implantable medical devices.' },
-]
-
-/* ── Differentiators ────────────────────────────────── */
-const differentiators = [
-  { Icon: ChipIcon,  title: 'Fully Automated Assembly',   desc: 'An 18-step fully automated back-end process — from tape application through final test — ensures consistent quality at 5 million units per month.' },
-  { Icon: ShieldIcon, title: 'Four ISO Certifications',   desc: 'ISO 9001, 14001, 45001 and 50001 certified. Every process step is controlled, documented and audited — quality you can verify, not just trust.' },
-  { Icon: LeafIcon,  title: 'Sustainability Commitment',  desc: 'ISO 14001 and 50001 certified for environmental and energy management. Manaus operates on predominantly hydroelectric power — one of the greenest supply chains in the Americas.' },
-  { Icon: GlobeIcon, title: 'Zona Franca Advantage',      desc: "Operating inside Brazil's Zona Franca de Manaus (ZFM) special economic zone delivers tax incentives via PADIS and PPB programs — and São Paulo delivery in ~3 days." },
-  { Icon: SpeedIcon, title: 'Class 1K Cleanroom',         desc: '894 m² Class 1K and 1,142 m² Class 10K cleanroom — with 20% capacity still available for new customer programs and equipment.' },
-  { Icon: FlaskIcon, title: 'Dedicated R&D Entity',       desc: "inTera Tecnologia, our in-house R&D arm, drives continuous process development under Brazil's PADIS semiconductor incentive programme." },
-]
+const CARD_ICONS = [ChipIcon, FlaskIcon, ShieldIcon, SpeedIcon]
+const DIFF_ICONS = [ChipIcon, ShieldIcon, LeafIcon, GlobeIcon, SpeedIcon, FlaskIcon]
+const MARKET_ICONS = ['🚗', '📡', '📱', '⚙️', '🏥']
 
 export default function Home() {
   useScrollReveal()
+  const { t } = useLanguage()
+  const s = useStrings()
 
   return (
     <div className="home">
@@ -96,10 +84,10 @@ export default function Home() {
 
         <div className="hero__bottom-bar">
           <a href="#capabilities" className="hero__bottom-link">
-            Explore Technology <span className="hero__bottom-arrow">↓</span>
+            {t('home.hero.explore_tech')} <span className="hero__bottom-arrow">↓</span>
           </a>
           <Link to="/contact" className="hero__bottom-link">
-            Contact Us <span className="hero__bottom-arrow">→</span>
+            {t('home.hero.contact_us')} <span className="hero__bottom-arrow">→</span>
           </Link>
         </div>
       </section>
@@ -109,40 +97,29 @@ export default function Home() {
         <div className="container">
           <div className="capabilities__header">
             <div>
-              <span className="section-label">Core Capabilities</span>
+              <span className="section-label">{t('home.capabilities.label')}</span>
               <div className="accent-line" />
-              <h2 className="section-title">Built for High-Volume,<br />High-Reliability Production</h2>
+              <h2 className="section-title">
+                {t('home.capabilities.title').split('\n').map((line, i, arr) => (
+                  <span key={i}>{line}{i < arr.length - 1 && <br />}</span>
+                ))}
+              </h2>
             </div>
-            <p className="section-subtitle">
-              From bare wafer through package assembly, test, and final inspection — TERA handles the complete back-end process under one roof, at scale.
-            </p>
+            <p className="section-subtitle">{t('home.capabilities.subtitle')}</p>
           </div>
 
           <div className="capabilities__grid">
-            <div className="cap-card cap-card--featured" style={{'--card-index': 0}}>
-              <div className="cap-card__icon"><ChipIcon /></div>
-              <h3>Package Assembly</h3>
-              <p>18-step fully automated back-end process — tape application, back grind, die saw, die bond, wire bond, molding, laser marking, and packaging — at 5M units/month.</p>
-              <Link to="/technology" className="cap-card__link">Learn more <ArrowRight /></Link>
-            </div>
-            <div className="cap-card" style={{'--card-index': 1}}>
-              <div className="cap-card__icon"><FlaskIcon /></div>
-              <h3>Package Portfolio</h3>
-              <p>eMMC (153-ball), eMCP (221-ball), BGA (252/272/132-ball), and LPDDR (200-ball) packages in 1× to 8× die configurations. NAND sources: Toshiba, Micron, Samsung.</p>
-              <Link to="/technology" className="cap-card__link">Learn more <ArrowRight /></Link>
-            </div>
-            <div className="cap-card" style={{'--card-index': 2}}>
-              <div className="cap-card__icon"><ShieldIcon /></div>
-              <h3>Cleanroom &amp; Capacity</h3>
-              <p>894 m² Class 1K and 1,142 m² Class 10K cleanroom. Maximum 5,000,000 units per month, with 20% of cleanroom area still available for new customer programs.</p>
-              <Link to="/technology" className="cap-card__link">Learn more <ArrowRight /></Link>
-            </div>
-            <div className="cap-card" style={{'--card-index': 3}}>
-              <div className="cap-card__icon"><SpeedIcon /></div>
-              <h3>Quality &amp; Compliance</h3>
-              <p>ISO 9001, 14001, 45001, and 50001 certified. PADIS and PPB Brazilian incentive programmes. Responsible Business Alliance (RBA) member.</p>
-              <Link to="/technology" className="cap-card__link">Learn more <ArrowRight /></Link>
-            </div>
+            {s.home.capabilities.cards.map((card, i) => {
+              const Icon = CARD_ICONS[i]
+              return (
+                <div key={i} className={`cap-card${i === 0 ? ' cap-card--featured' : ''}`} style={{'--card-index': i}}>
+                  <div className="cap-card__icon"><Icon /></div>
+                  <h3>{card.title}</h3>
+                  <p>{card.desc}</p>
+                  <Link to="/technology" className="cap-card__link">{card.link} <ArrowRight /></Link>
+                </div>
+              )
+            })}
           </div>
         </div>
       </section>
@@ -151,28 +128,28 @@ export default function Home() {
       <section className="markets-section section section--dark" data-reveal-scale>
         <div className="container">
           <div className="section-header-centered">
-            <span className="section-label">Markets We Serve</span>
+            <span className="section-label">{t('home.markets.label')}</span>
             <div className="accent-line" style={{ margin: '0 auto 20px' }} />
             <h2 className="section-title light" style={{ textAlign: 'center' }}>
-              Powering Innovation Across Industries
+              {t('home.markets.title')}
             </h2>
             <p className="section-subtitle light" style={{ textAlign: 'center', margin: '0 auto 48px' }}>
-              Our assembly and test services power critical applications in five demanding verticals.
+              {t('home.markets.subtitle')}
             </p>
           </div>
 
           <div className="markets-grid">
-            {markets.map(({ icon, title, desc }, i) => (
-              <div key={title} className="market-card" style={{'--card-index': i}}>
-                <span className="market-card__icon">{icon}</span>
-                <h3>{title}</h3>
-                <p>{desc}</p>
+            {s.home.markets.items.map((item, i) => (
+              <div key={i} className="market-card" style={{'--card-index': i}}>
+                <span className="market-card__icon">{MARKET_ICONS[i]}</span>
+                <h3>{item.title}</h3>
+                <p>{item.desc}</p>
               </div>
             ))}
           </div>
 
           <div className="markets-cta">
-            <Link to="/markets" className="btn-primary-dark">View All Markets <ArrowRight /></Link>
+            <Link to="/markets" className="btn-primary-dark">{t('home.markets.view_all')} <ArrowRight /></Link>
           </div>
         </div>
       </section>
@@ -184,24 +161,27 @@ export default function Home() {
         </div>
         <div className="container">
           <div className="section-header-centered">
-            <span className="section-label">Why Choose TERA</span>
+            <span className="section-label">{t('home.why_tera.label')}</span>
             <div className="accent-line" style={{ margin: '0 auto 20px' }} />
             <h2 className="section-title light" style={{ textAlign: 'center' }}>
-              Your Strategic Manufacturing Partner
+              {t('home.why_tera.title')}
             </h2>
             <p className="section-subtitle light" style={{ textAlign: 'center', margin: '0 auto 52px' }}>
-              World-class assembly capability with the agility of a dedicated partner — inside Brazil's premier free trade zone.
+              {t('home.why_tera.subtitle')}
             </p>
           </div>
 
           <div className="diff-grid">
-            {differentiators.map(({ Icon, title, desc }, i) => (
-              <div key={title} className="diff-card" style={{'--card-index': i}}>
-                <div className="diff-card__icon"><Icon /></div>
-                <h3>{title}</h3>
-                <p>{desc}</p>
-              </div>
-            ))}
+            {s.home.why_tera.items.map((item, i) => {
+              const Icon = DIFF_ICONS[i]
+              return (
+                <div key={i} className="diff-card" style={{'--card-index': i}}>
+                  <div className="diff-card__icon"><Icon /></div>
+                  <h3>{item.title}</h3>
+                  <p>{item.desc}</p>
+                </div>
+              )
+            })}
           </div>
         </div>
       </section>
@@ -210,16 +190,16 @@ export default function Home() {
       <section className="partners section section--dark" data-reveal-scale>
         <div className="container">
           <div className="section-header-centered">
-            <span className="section-label">Trusted By Industry Leaders</span>
+            <span className="section-label">{t('home.partners.label')}</span>
             <div className="accent-line" style={{ margin: '0 auto 16px' }} />
             <h2 className="section-title light" style={{ textAlign: 'center', fontSize: 'clamp(1.4rem, 3vw, 1.9rem)' }}>
-              The Partner of Choice Across Five Verticals
+              {t('home.partners.title')}
             </h2>
             <p className="section-subtitle light" style={{ textAlign: 'center', margin: '0 auto 16px' }}>
-              From Tier-1 automotive suppliers to fast-growing IoT innovators — global OEMs rely on TERA for critical semiconductor manufacturing.
+              {t('home.partners.subtitle')}
             </p>
           </div>
-          <p className="partners-nda">Client identities withheld under active NDA agreements.</p>
+          <p className="partners-nda">{t('home.partners.nda_note')}</p>
         </div>
       </section>
 
@@ -228,12 +208,12 @@ export default function Home() {
         <div className="cta-banner__bg" aria-hidden="true" />
         <div className="container cta-banner__inner">
           <div>
-            <h2>Ready to Partner with TERA?</h2>
-            <p>Talk to our engineering team about your package requirements, volume, and timeline.</p>
+            <h2>{t('home.cta.title')}</h2>
+            <p>{t('home.cta.subtitle')}</p>
           </div>
           <div className="cta-banner__actions">
-            <Link to="/contact" className="btn-primary">Request a Quote <ArrowRight /></Link>
-            <Link to="/technology" className="btn-outline">View Technology</Link>
+            <Link to="/contact" className="btn-primary">{t('home.cta.request_quote')} <ArrowRight /></Link>
+            <Link to="/technology" className="btn-outline">{t('home.cta.view_technology')}</Link>
           </div>
         </div>
       </section>

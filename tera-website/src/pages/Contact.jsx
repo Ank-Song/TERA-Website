@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useLanguage, useStrings } from '../i18n/LangContext'
 import './Contact.css'
 
 const ArrowRight = () => (
@@ -7,27 +8,10 @@ const ArrowRight = () => (
   </svg>
 )
 
-const SUBJECTS = [
-  'Process Technology Inquiry',
-  'Memory Product Inquiry (eMMC / UFS / NAND)',
-  'Packaging & Test Services',
-  'Design Enablement / PDK Access',
-  'Volume Pricing & Capacity',
-  'Automotive / Industrial Qualification',
-  'General Business Inquiry',
-  'Other',
-]
-
-const MARKETS = [
-  'Automotive',
-  'IoT / Consumer',
-  'Mobile',
-  'Industrial',
-  'Medical / Healthcare',
-  'Other',
-]
-
 export default function Contact() {
+  const { t } = useLanguage()
+  const s = useStrings()
+
   const [form, setForm] = useState({
     firstName: '',
     lastName: '',
@@ -48,13 +32,13 @@ export default function Contact() {
 
   const validate = () => {
     const e = {}
-    if (!form.firstName.trim()) e.firstName = 'First name is required'
-    if (!form.lastName.trim()) e.lastName = 'Last name is required'
-    if (!form.company.trim()) e.company = 'Company is required'
-    if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = 'Valid email is required'
-    if (!form.subject) e.subject = 'Please select a subject'
-    if (!form.message.trim() || form.message.length < 20) e.message = 'Message must be at least 20 characters'
-    if (!form.consent) e.consent = 'You must agree to proceed'
+    if (!form.firstName.trim()) e.firstName = t('contact.errors.first_name')
+    if (!form.lastName.trim()) e.lastName = t('contact.errors.last_name')
+    if (!form.company.trim()) e.company = t('contact.errors.company')
+    if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = t('contact.errors.email')
+    if (!form.subject) e.subject = t('contact.errors.subject')
+    if (!form.message.trim() || form.message.length < 20) e.message = t('contact.errors.message')
+    if (!form.consent) e.consent = t('contact.errors.consent')
     return e
   }
 
@@ -90,7 +74,7 @@ export default function Contact() {
         'Get a free key at https://web3forms.com and add it to .env.local'
       )
       setLoading(false)
-      setErrors({ submit: 'Form is not yet configured. Please email us directly at sales@terasemi.com.br' })
+      setErrors({ submit: t('contact.errors.not_configured') })
       return
     }
 
@@ -120,10 +104,10 @@ export default function Contact() {
       if (data.success) {
         setSubmitted(true)
       } else {
-        setErrors({ submit: data.message || 'Submission failed. Please try again or email us directly.' })
+        setErrors({ submit: data.message || t('contact.errors.network') })
       }
     } catch {
-      setErrors({ submit: 'Network error. Please check your connection or email sales@terasemi.com.br' })
+      setErrors({ submit: t('contact.errors.network') })
     } finally {
       setLoading(false)
     }
@@ -139,14 +123,13 @@ export default function Contact() {
           <div className="page-hero__glow" />
         </div>
         <div className="container page-hero__inner">
-          <span className="section-label">Contact Us</span>
+          <span className="section-label">{t('contact.hero.label')}</span>
           <h1 className="page-hero__title">
-            Start a Conversation<br />
-            with Our Team
+            {t('contact.hero.title').split('\n').map((line, i, arr) => (
+              <span key={i}>{line}{i < arr.length - 1 && <br />}</span>
+            ))}
           </h1>
-          <p className="page-hero__subtitle">
-            Whether you're evaluating assembly and test partners, requesting a quote, or seeking technical information — our team responds within one business day.
-          </p>
+          <p className="page-hero__subtitle">{t('contact.hero.subtitle')}</p>
         </div>
       </section>
 
@@ -156,23 +139,23 @@ export default function Contact() {
           {/* Sidebar Info */}
           <aside className="contact-sidebar">
             <div className="sidebar-card">
-              <h3>Sales & Business Development</h3>
+              <h3>{t('contact.sidebar.sales_title')}</h3>
               <a href="mailto:sales@terasemi.com.br" className="sidebar-link">
                 sales@terasemi.com.br
               </a>
-              <p className="sidebar-note">For quotes, capacity, and commercial inquiries.</p>
+              <p className="sidebar-note">{t('contact.sidebar.sales_note')}</p>
             </div>
 
             <div className="sidebar-card">
-              <h3>Technical Support</h3>
+              <h3>{t('contact.sidebar.tech_title')}</h3>
               <a href="mailto:tech@terasemi.com.br" className="sidebar-link">
                 tech@terasemi.com.br
               </a>
-              <p className="sidebar-note">For process, PDK, and design enablement questions.</p>
+              <p className="sidebar-note">{t('contact.sidebar.tech_note')}</p>
             </div>
 
             <div className="sidebar-card">
-              <h3>Headquarters</h3>
+              <h3>{t('contact.sidebar.hq_title')}</h3>
               <address>
                 <strong>Tera Semiconductor Ltda.</strong><br />
                 Polo Industrial de Manaus<br />
@@ -183,16 +166,16 @@ export default function Contact() {
             </div>
 
             <div className="sidebar-card">
-              <h3>Operating Hours</h3>
-              <p className="sidebar-note">Mon – Fri: 08:00 – 18:00 (BRT, UTC-4)</p>
-              <p className="sidebar-note">Fab operations: 24/7</p>
+              <h3>{t('contact.sidebar.hours_title')}</h3>
+              <p className="sidebar-note">{t('contact.sidebar.hours_weekdays')}</p>
+              <p className="sidebar-note">{t('contact.sidebar.hours_fab')}</p>
             </div>
 
             <div className="sidebar-response">
               <div className="response-icon">⚡</div>
               <div>
-                <strong>Response SLA</strong>
-                <p>We respond to all inquiries within 1 business day.</p>
+                <strong>{t('contact.sidebar.response_label')}</strong>
+                <p>{t('contact.sidebar.response_note')}</p>
               </div>
             </div>
           </aside>
@@ -202,28 +185,26 @@ export default function Contact() {
             {submitted ? (
               <div className="form-success">
                 <div className="form-success__icon">✓</div>
-                <h2>Message Received</h2>
-                <p>
-                  Thank you for reaching out to Tera Semiconductor. A member of our team will review your inquiry and respond within one business day.
-                </p>
+                <h2>{t('contact.success.title')}</h2>
+                <p>{t('contact.success.body')}</p>
                 <p style={{ marginTop: 12, fontSize: '0.875rem', color: 'var(--text-secondary)' }}>
-                  Reference: <strong>TERA-{Date.now().toString(36).toUpperCase()}</strong>
+                  {t('contact.success.ref_label')} <strong>TERA-{Date.now().toString(36).toUpperCase()}</strong>
                 </p>
                 <button
                   className="btn-primary"
                   style={{ marginTop: 32 }}
                   onClick={() => { setSubmitted(false); setForm({ firstName:'',lastName:'',company:'',jobTitle:'',email:'',phone:'',country:'',subject:'',market:'',volume:'',message:'',consent:false }) }}
                 >
-                  Submit Another Inquiry
+                  {t('contact.success.submit_another')}
                 </button>
               </div>
             ) : (
               <form className="contact-form" onSubmit={handleSubmit} noValidate>
-                <div className="form-section-title">Contact Information</div>
+                <div className="form-section-title">{t('contact.form.section_contact')}</div>
 
                 <div className="form-row">
                   <div className={`form-group${errors.firstName ? ' form-group--error' : ''}`}>
-                    <label htmlFor="firstName">First Name *</label>
+                    <label htmlFor="firstName">{t('contact.form.first_name')} *</label>
                     <input
                       id="firstName"
                       name="firstName"
@@ -236,7 +217,7 @@ export default function Contact() {
                     {errors.firstName && <span className="form-error">{errors.firstName}</span>}
                   </div>
                   <div className={`form-group${errors.lastName ? ' form-group--error' : ''}`}>
-                    <label htmlFor="lastName">Last Name *</label>
+                    <label htmlFor="lastName">{t('contact.form.last_name')} *</label>
                     <input
                       id="lastName"
                       name="lastName"
@@ -252,7 +233,7 @@ export default function Contact() {
 
                 <div className="form-row">
                   <div className={`form-group${errors.company ? ' form-group--error' : ''}`}>
-                    <label htmlFor="company">Company *</label>
+                    <label htmlFor="company">{t('contact.form.company')} *</label>
                     <input
                       id="company"
                       name="company"
@@ -265,7 +246,7 @@ export default function Contact() {
                     {errors.company && <span className="form-error">{errors.company}</span>}
                   </div>
                   <div className="form-group">
-                    <label htmlFor="jobTitle">Job Title</label>
+                    <label htmlFor="jobTitle">{t('contact.form.job_title')}</label>
                     <input
                       id="jobTitle"
                       name="jobTitle"
@@ -279,7 +260,7 @@ export default function Contact() {
 
                 <div className="form-row">
                   <div className={`form-group${errors.email ? ' form-group--error' : ''}`}>
-                    <label htmlFor="email">Business Email *</label>
+                    <label htmlFor="email">{t('contact.form.business_email')} *</label>
                     <input
                       id="email"
                       name="email"
@@ -292,7 +273,7 @@ export default function Contact() {
                     {errors.email && <span className="form-error">{errors.email}</span>}
                   </div>
                   <div className="form-group">
-                    <label htmlFor="phone">Phone Number</label>
+                    <label htmlFor="phone">{t('contact.form.phone')}</label>
                     <input
                       id="phone"
                       name="phone"
@@ -306,7 +287,7 @@ export default function Contact() {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="country">Country / Region</label>
+                  <label htmlFor="country">{t('contact.form.country')}</label>
                   <input
                     id="country"
                     name="country"
@@ -318,46 +299,47 @@ export default function Contact() {
                 </div>
 
                 <div className="form-divider" />
-                <div className="form-section-title">Inquiry Details</div>
+                <div className="form-section-title">{t('contact.form.section_inquiry')}</div>
 
                 <div className="form-row">
                   <div className={`form-group${errors.subject ? ' form-group--error' : ''}`}>
-                    <label htmlFor="subject">Subject *</label>
+                    <label htmlFor="subject">{t('contact.form.subject')} *</label>
                     <select
                       id="subject"
                       name="subject"
                       value={form.subject}
                       onChange={handleChange}
                     >
-                      <option value="">Select a topic…</option>
-                      {SUBJECTS.map(s => <option key={s} value={s}>{s}</option>)}
+                      <option value="">{t('contact.form.select_topic')}</option>
+                      {s.contact.form.subjects.map(subj => (
+                        <option key={subj} value={subj}>{subj}</option>
+                      ))}
                     </select>
                     {errors.subject && <span className="form-error">{errors.subject}</span>}
                   </div>
                   <div className="form-group">
-                    <label htmlFor="market">Target Market</label>
+                    <label htmlFor="market">{t('contact.form.market')}</label>
                     <select id="market" name="market" value={form.market} onChange={handleChange}>
-                      <option value="">Select market…</option>
-                      {MARKETS.map(m => <option key={m} value={m}>{m}</option>)}
+                      <option value="">{t('contact.form.select_market')}</option>
+                      {s.contact.form.markets.map(m => (
+                        <option key={m} value={m}>{m}</option>
+                      ))}
                     </select>
                   </div>
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="volume">Estimated Annual Volume</label>
+                  <label htmlFor="volume">{t('contact.form.volume')}</label>
                   <select id="volume" name="volume" value={form.volume} onChange={handleChange}>
-                    <option value="">Select volume range…</option>
-                    <option>Prototype / NRE only</option>
-                    <option>{'< 10K units/year'}</option>
-                    <option>10K – 100K units/year</option>
-                    <option>100K – 1M units/year</option>
-                    <option>{'> 1M units/year'}</option>
-                    <option>Not yet determined</option>
+                    <option value="">{t('contact.form.select_volume')}</option>
+                    {s.contact.form.volumes.map(v => (
+                      <option key={v} value={v}>{v}</option>
+                    ))}
                   </select>
                 </div>
 
                 <div className={`form-group${errors.message ? ' form-group--error' : ''}`}>
-                  <label htmlFor="message">Message *</label>
+                  <label htmlFor="message">{t('contact.form.message')} *</label>
                   <textarea
                     id="message"
                     name="message"
@@ -366,7 +348,9 @@ export default function Contact() {
                     value={form.message}
                     onChange={handleChange}
                   />
-                  <span className="form-hint">{form.message.length} / 2000 characters</span>
+                  <span className="form-hint">
+                    {t('contact.form.char_count').replace('{n}', form.message.length)}
+                  </span>
                   {errors.message && <span className="form-error">{errors.message}</span>}
                 </div>
 
@@ -379,7 +363,9 @@ export default function Contact() {
                       onChange={handleChange}
                     />
                     <span>
-                      I consent to Tera Semiconductor processing my data to respond to this inquiry, in accordance with the <a href="/legal">Privacy Policy</a>. *
+                      {t('contact.form.consent_before')}
+                      <a href="/legal">{t('contact.form.consent_link')}</a>
+                      {t('contact.form.consent_after')}
                     </span>
                   </label>
                   {errors.consent && <span className="form-error">{errors.consent}</span>}
@@ -395,18 +381,16 @@ export default function Contact() {
                   {loading ? (
                     <>
                       <span className="spinner" />
-                      Sending…
+                      {t('contact.form.sending')}
                     </>
                   ) : (
                     <>
-                      Send Inquiry <ArrowRight />
+                      {t('contact.form.send_inquiry')} <ArrowRight />
                     </>
                   )}
                 </button>
 
-                <p className="form-privacy">
-                  Your information is transmitted securely and never shared with third parties. By submitting this form you agree to our Privacy Policy.
-                </p>
+                <p className="form-privacy">{t('contact.form.privacy_note')}</p>
               </form>
             )}
           </div>
