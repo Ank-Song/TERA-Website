@@ -27,7 +27,7 @@ export default function Navbar() {
         {/* Logo */}
         <Link to="/" className="navbar__logo" onClick={() => setMenuOpen(false)}>
           <img
-            src="/logo.png"
+            src={`${import.meta.env.BASE_URL}logo.png`}
             alt="TERA Semiconductor"
             className="logo-img"
             onError={e => { e.currentTarget.style.display = 'none'; e.currentTarget.nextSibling.style.display = 'flex' }}
